@@ -15,7 +15,7 @@ namespace KSG
         }
         public static string GetDictionaryAsset(string assetName, bool fromBytes = false)
         {
-            return GameFramework.Utility.Text.Format("Assets/GameMain/Localization/{0}/Dictionaries/{1}.{2}", GameEntry.Localization.Language.ToString(), assetName, fromBytes ? "bytes" : "json");
+            return GameFramework.Utility.Text.Format("Assets/GameMain/Localization/{0}/Dictionaries/{1}.{2}", GameEntry.Localization.Language.ToString(), assetName, fromBytes ? "bytes" : "xml");
         }
 
         public static string GetSceneAsset(string assetName)
@@ -50,6 +50,10 @@ namespace KSG
             return GameFramework.Utility.Text.Format("Assets/GameMain/UI/UIForms/{0}/{1}.prefab", assetfolder, assetName);
         }
 
+        public static string GetFontAsset(string assetName)
+        {
+            return Utility.Text.Format("Assets/GameMain/Resources/Fonts/{0}.ttf", assetName);
+        }
         public static string GetSpriteAsset()
         {
             return "Assets/GameMain/CostumAssets/SpritesAsset.asset";

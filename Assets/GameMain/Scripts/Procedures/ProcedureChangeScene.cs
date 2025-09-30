@@ -7,6 +7,13 @@ namespace KSG
 {
     public class ProcedureChangeScene : ProcedureBase
     {
+        public override bool UseNativeDialog
+        {
+            get
+            {
+                return false;
+            }
+        }
         /// <summary>
         /// 所有已加载的场景
         /// </summary>

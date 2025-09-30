@@ -3,98 +3,118 @@ using GameFramework.Event;
 using GameFramework.Fsm;
 using GameFramework.Procedure;
 using UnityGameFramework.Runtime;
+using GameFramework.Localization;
+using System;
 
 namespace KSG
 {
     public class ProcedureLaunch : ProcedureBase
     {
-        private Dictionary<string, bool> m_LoadedFlag = new();
-
+        public override bool UseNativeDialog
+        {
+            get
+            {
+                return false;
+            }
+        }
         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
-            Log.Info("Init Game.");
 
-            GameEntry.Event.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnLoadDataTableSuccess);
-            GameEntry.Event.Subscribe(LoadDataTableFailureEventArgs.EventId, OnLoadDataTableFailure);
-            GameEntry.DataNode.GetOrAddNode(Constant.ProcedureRunningData.NextSceneName).SetData<VarString>("Menu");
-            GameEntry.DataNode.GetOrAddNode(Constant.ProcedureRunningData.TransitionalMessage).SetData<VarString>("Loading.");
-            GameEntry.DataNode.GetOrAddNode(Constant.ProcedureRunningData.CanChangeProcedure).SetData<VarBoolean>(false);
-            m_LoadedFlag.Clear();
-            PreloadResources();
+            // 语言配置：设置当前使用的语言，如果不设置，则默认使用操作系统语言
+            InitLanguageSettings();
+
+            // 变体配置：根据使用的语言，通知底层加载对应的资源变体
+            InitCurrentVariant();
+            
+            // 默认字典：加载默认字典文件 Assets/GameMain/Configs/DefaultDictionary.xml
+            // 此字典文件记录了资源更新前使用的各种语言的字符串，会随 App 一起发布，故不可更新
+            GameEntry.BuiltinData.InitDefaultDictionary();
+
         }
 
         protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds,
             float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-
-            IEnumerator<bool> iter = m_LoadedFlag.Values.GetEnumerator();
-            while (iter.MoveNext())
-            {
-                if (!iter.Current)
-                {
-                    Log.Info("Data table loading...");
-                    return;
-                }
-            }
-            Log.Info("All data table loaded.");
-            //所有资源加载就绪，进入场景切换流程
-            ChangeState<ProcedureChangeScene>(procedureOwner);
+            // 运行一帧即切换到 Splash 展示流程
+            ChangeState<ProcedureSplash>(procedureOwner);
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
 
-            GameEntry.Event.Unsubscribe(LoadDataTableSuccessEventArgs.EventId, OnLoadDataTableSuccess);
-            GameEntry.Event.Unsubscribe(LoadDataTableFailureEventArgs.EventId, OnLoadDataTableFailure);
-
         }
 
-        private void PreloadResources()
-        {
-            // LoadDataTable("Sound");
-            // LoadDataTable("Tools");
-            LoadDataTable("Player");
-            LoadDataTable("Entity");
-            LoadDataTable("Scene");
-            LoadDataTable("UIForm");
-            // LoadDataTable("Camera");
-        }
-        private void LoadDataTable(string dataTableName)
-        {
-            string dataTableAssetName = AssetUtility.GetDataTableAsset(dataTableName, false);
-            m_LoadedFlag.Add(dataTableAssetName, false);
-            GameEntry.DataTable.LoadDataTable(dataTableName, dataTableAssetName, this);
-        }
 
-        private void OnLoadDataTableFailure(object sender, GameEventArgs e)
+        private void InitLanguageSettings()
         {
-            LoadDataTableFailureEventArgs ne = (LoadDataTableFailureEventArgs)e;
-            if (ne.UserData != this)
+            if (GameEntry.Base.EditorResourceMode && GameEntry.Base.EditorLanguage != Language.Unspecified)
             {
+                // 编辑器资源模式直接使用 Inspector 上设置的语言
                 return;
             }
 
-            Log.Error("Can not load data table '{0}' from '{1}' with error message '{2}'.", ne.DataTableAssetName, ne.DataTableAssetName, ne.ErrorMessage);
-        }
-        /// <summary>
-        /// 如果匹配，它会将资源表名称在 m_LoadedFlag 字典中的状态设置为 true，并输出成功加载的日志信息。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLoadDataTableSuccess(object sender, GameEventArgs e)
-        {
-            LoadDataTableSuccessEventArgs ne = (LoadDataTableSuccessEventArgs)e;
-            if (ne.UserData != this)
+            Language language = GameEntry.Localization.Language;
+            if (GameEntry.Setting.HasSetting(Constant.Setting.Language))
             {
+                try
+                {
+                    string languageString = GameEntry.Setting.GetString(Constant.Setting.Language);
+                    language = (Language)Enum.Parse(typeof(Language), languageString);
+                }
+                catch
+                {
+                }
+            }
+
+            if (language != Language.English
+                && language != Language.ChineseSimplified
+                && language != Language.Japanese)
+            {
+                // 若是暂不支持的语言，则使用英语
+                language = Language.English;
+
+                GameEntry.Setting.SetString(Constant.Setting.Language, language.ToString());
+                GameEntry.Setting.Save();
+            }
+
+            GameEntry.Localization.Language = language;
+            Log.Info("Init language settings complete, current language is '{0}'.", language.ToString());
+        
+        }
+
+        private void InitCurrentVariant()
+        {
+            if (GameEntry.Base.EditorResourceMode)
+            {
+                // 编辑器资源模式不使用 AssetBundle，也就没有变体了
                 return;
             }
 
-            m_LoadedFlag[ne.DataTableAssetName] = true;
+            string currentVariant = null;
+            switch (GameEntry.Localization.Language)
+            {
+                case Language.English:
+                    currentVariant = "en-us";
+                    break;
 
-            Log.Info("Load dictionary '{0}' OK.", ne.DataTableAssetName);
+                case Language.ChineseSimplified:
+                    currentVariant = "zh-cn";
+                    break;
+
+                case Language.Japanese:
+                    currentVariant = "ja-jp";
+                    break;
+
+                default:
+                    currentVariant = "zh-cn";
+                    break;
+            }
+
+            GameEntry.Resource.SetCurrentVariant(currentVariant);
+            Log.Info("Init current variant complete.");
         }
     }
 }

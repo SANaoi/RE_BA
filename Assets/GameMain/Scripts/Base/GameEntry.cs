@@ -7,7 +7,7 @@ namespace KSG
         private void Start()
         {
             InitBuiltinComponents();
-            print("init");
+            InitCustomComponents();
         }
     }
 }

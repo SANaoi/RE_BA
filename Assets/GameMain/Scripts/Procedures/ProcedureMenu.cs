@@ -7,6 +7,13 @@ namespace KSG
 {
     public class ProcedureMenu : ProcedureBase
     {
+        public override bool UseNativeDialog
+        {
+            get
+            {
+                return false;
+            }
+        }
         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
