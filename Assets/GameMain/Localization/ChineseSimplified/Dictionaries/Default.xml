@@ -3,5 +3,8 @@
   <Dictionary Language="ChineseSimplified">
     <String Key="Menu.SettingButton" Value="设置" />
     <String Key="Setting.Language" Value="语言" />
+    <String Key="Setting.LanguageTips" Value="更改语言需要重启游戏" />
+    <String Key="Dialog.ConfirmButton" Value="确认" />
+    <String Key="Dialog.CancelButton" Value="取消" />
   </Dictionary>
 </Dictionaries>

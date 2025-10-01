@@ -20,7 +20,7 @@
     <String Key="Language.English" Value="英語" />
     <String Key="Language.ChineseSimplified" Value="中国語 簡体字" />
     <String Key="Language.ChineseTraditional" Value="中国語 繁体字" />
-    <String Key="Language.Japanese" Value="韓国語" />
+    <String Key="Language.Japanese" Value="日本語" />
     <String Key="CheckVersion.Tips" Value="ゲームの最新バージョンを検索中..." />
     <String Key="UpdateResource.Tips" Value="{0}/{1}, {2}/{3}, {4:P0}, {5}/s" />
   </Dictionary>
