@@ -457,6 +457,9 @@
     <Reference Include="UnityEditor.XRModule">
       <HintPath>D:\UnityEditor\6000.0.29f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>E:\ayaya\unity\RE_BA\Library\PackageCache\com.unity.collections\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>E:\ayaya\unity\RE_BA\Library\PackageCache\com.unity.ext.nunit\net40\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
@@ -469,14 +472,11 @@
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>E:\ayaya\unity\RE_BA\Library\PackageCache\com.unity.visualscripting\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>E:\ayaya\unity\RE_BA\Assets\GameFramework\Libraries\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>E:\ayaya\unity\RE_BA\Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Collections.LowLevel.ILSupport">
-      <HintPath>E:\ayaya\unity\RE_BA\Library\PackageCache\com.unity.collections\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>E:\ayaya\unity\RE_BA\Assets\GameFramework\Libraries\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:\UnityEditor\6000.0.29f1c1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -874,11 +874,14 @@
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
       <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor.Shared">
+      <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.Shared.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Editor.Shared">
-      <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.Shared.dll</HintPath>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
       <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
@@ -888,9 +891,6 @@
     </Reference>
     <Reference Include="Unity.Multiplayer.Center.Editor">
       <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-      <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>E:\ayaya\unity\RE_BA\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
