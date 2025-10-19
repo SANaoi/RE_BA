@@ -36,7 +36,7 @@ namespace KSG
 
         public static void ShowPlayer(this EntityComponent entityComponent, PlayerData data)
         {
-            entityComponent.ShowEntity(typeof(Player), "Player", "Player", Constant.AssetPriority.PlayerAsset, data);
+            entityComponent.ShowEntity(typeof(PlayerLogic), "Player", "Player", Constant.AssetPriority.PlayerAsset, data);
         }
 
         private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, int priority, EntityData data)
