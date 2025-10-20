@@ -7,18 +7,14 @@ namespace KSG
     {
         [Header("Animation参数命名")]
         [SerializeField] private string IsRunningParameterName = "isRunning";
-        [SerializeField] private string PlayerHorizontalVelocity = "x";
-        [SerializeField] private string PlayerVerticalVelocity = "y";
+        [SerializeField] private string SpeedParameterName = "Speed";
 
         public int isRunningParameterHash { get; private set; }
-        public int playerHorizontalVelocityHash { get; private set; }
-        public int playerVerticalVelocityHash { get; private set; }
-
+        public int SpeedParameterHash { get; private set; }
         public void InitializeData()
         {
             isRunningParameterHash = Animator.StringToHash(IsRunningParameterName);
-            playerHorizontalVelocityHash = Animator.StringToHash(PlayerHorizontalVelocity);
-            playerVerticalVelocityHash = Animator.StringToHash(PlayerVerticalVelocity);
+            SpeedParameterHash = Animator.StringToHash(SpeedParameterName);
         }
     }
 }

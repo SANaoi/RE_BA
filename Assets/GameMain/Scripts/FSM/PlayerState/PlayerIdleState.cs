@@ -1,5 +1,6 @@
 using GameFramework;
 using GameFramework.Fsm;
+using UnityEngine;
 using ProcedureOwner = GameFramework.Fsm.IFsm<KSG.PlayerLogic>;
 
 namespace KSG
@@ -19,10 +20,18 @@ namespace KSG
             owner = procedureOwner.Owner;
         }
 
-                protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
+        protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-            
+            owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, 0f);
+
+            if (owner.playerMoveInput == Vector2.zero)
+            {
+                return;
+            }
+
+            ChangeState<PlayerMoveState>(procedureOwner);
+            return;
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

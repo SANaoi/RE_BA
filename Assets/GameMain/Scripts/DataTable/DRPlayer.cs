@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-10-19 18:31:37.523
+// 生成时间：2025-10-21 01:15:07.094
 //------------------------------------------------------------
 
 using GameFramework;
@@ -54,6 +54,15 @@ namespace KSG
             private set;
         }
 
+        /// <summary>
+        /// 获取移速。
+        /// </summary>
+        public float Speed
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -68,6 +77,7 @@ namespace KSG
             index++;
             NameId = columnStrings[index++];
             HP = float.Parse(columnStrings[index++]);
+            Speed = float.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -82,6 +92,7 @@ namespace KSG
                     m_Id = binaryReader.Read7BitEncodedInt32();
                     NameId = binaryReader.ReadString();
                     HP = binaryReader.ReadSingle();
+                    Speed = binaryReader.ReadSingle();
                 }
             }
 

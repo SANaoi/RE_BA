@@ -1,5 +1,6 @@
 using GameFramework;
 using GameFramework.Fsm;
+using UnityEngine;
 using ProcedureOwner = GameFramework.Fsm.IFsm<KSG.PlayerLogic>;
 
 namespace KSG
@@ -22,6 +23,17 @@ namespace KSG
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
 
+            owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMovement.magnitude * owner.playerData.Speed);
+
+            if (owner.isRunning && owner.playerMoveInput != Vector2.zero)
+            {
+                ChangeState<PlayerRunState>(procedureOwner);
+            }
+            //切换回空闲状态
+            else if (owner.playerMoveInput == Vector2.zero)
+            {
+                ChangeState<PlayerIdleState>(procedureOwner);
+            }
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

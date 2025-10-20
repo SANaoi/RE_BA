@@ -55,6 +55,15 @@ namespace KSG
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""3a1285b4-7a19-41fc-954e-3ca3cd5e1e3d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,17 @@ namespace KSG
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e60baca-12f0-41c8-a479-a3bc16118bfb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -145,6 +165,7 @@ namespace KSG
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+            m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         }
 
         ~@PlayerInputAction()
@@ -214,6 +235,7 @@ namespace KSG
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_Shoot;
+        private readonly InputAction m_Player_Run;
         public struct PlayerActions
         {
             private @PlayerInputAction m_Wrapper;
@@ -221,6 +243,7 @@ namespace KSG
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+            public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -239,6 +262,9 @@ namespace KSG
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -252,6 +278,9 @@ namespace KSG
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @Run.started -= instance.OnRun;
+                @Run.performed -= instance.OnRun;
+                @Run.canceled -= instance.OnRun;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -274,6 +303,7 @@ namespace KSG
             void OnMove(InputAction.CallbackContext context);
             void OnAim(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
+            void OnRun(InputAction.CallbackContext context);
         }
     }
 }

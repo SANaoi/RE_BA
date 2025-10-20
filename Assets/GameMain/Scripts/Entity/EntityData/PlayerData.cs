@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace KSG
 {
-	public class PlayerData : CharacterData
-	{
+    public class PlayerData : CharacterData
+    {
         [SerializeField]
         private float m_MaxHP = 0;
-		public PlayerData(int entityId, int typeId)
+        private float m_Speed = 0;
+        public PlayerData(int entityId, int typeId)
             : base(entityId, typeId, CampType.Player)
-		{
+        {
             IDataTable<DRPlayer> dtPlayer = GameEntry.DataTable.GetDataTable<DRPlayer>();
             DRPlayer drPlayer = dtPlayer.GetDataRow(TypeId);
             if (drPlayer == null)
@@ -18,8 +19,9 @@ namespace KSG
             }
 
             m_MaxHP = drPlayer.HP;
+            m_Speed = drPlayer.Speed;
 
-		}
+        }
 
         /// <summary>
         /// 最大生命。
@@ -31,5 +33,15 @@ namespace KSG
                 return m_MaxHP;
             }
         }
-	}
+        /// <summary>
+        /// 基础移速。
+        /// </summary>
+        public float Speed
+        {
+            get
+            {
+                return m_Speed;
+            }
+        }
+    }
 }
