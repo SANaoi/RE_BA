@@ -18,7 +18,7 @@ namespace KSG
             public const int UISoundAsset = 30;
             public const int ItemAsset = 70;
             public const int EntityAsset = 60;
-
+            public const int CameraAsset = 90;
             public const int PlayerAsset = 80;
         }
     }

@@ -65,6 +65,7 @@
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Sound\SoundExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRUIForm.cs" />
@@ -77,7 +78,10 @@
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureChangeScene.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DataTableExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CameraData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureGame.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\SettingForm.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\CameraLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DREntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumUIForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRPlayer.cs" />
@@ -86,8 +90,8 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityExtension.cs" />
     <Compile Include="Assets\GameMain\Test\TimelineTest\DialogueTimelineController.cs" />
     <Compile Include="Assets\GameMain\Test\MultiImageController.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\PlayerLogic.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.AssetPriority.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Enum\EnumCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Custom.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\BinaryReaderExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Entity.cs" />
@@ -98,6 +102,7 @@
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureMenu.cs" />
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
+    <Compile Include="Assets\GameMain\Scripts\DataTable\DRCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UpdateResourceForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumEntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRScene.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="Assets\GameMain\Scripts\UI\CommonButton.cs" />
     <Compile Include="Assets\GameMain\Definition\DataStruct\BuildInfo.cs" />
     <Compile Include="Assets\GameMain\Definition\AnimationData\PlayerAnimationName.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\InputProviderControl.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Builtin.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.ProcedureRunningData.cs" />
     <Compile Include="Assets\GameMain\Scripts\BuiltinData\BuiltinDataComponent.cs" />
@@ -128,6 +134,7 @@
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameMain\Test\CharacterTest\ToonForwardPass.hlsl" />
     <None Include="Assets\GameMain\Configs\DataTableCodeTemplate.txt" />
+    <None Include="Assets\GameMain\DataTables\Camera.txt" />
     <None Include="Assets\GameMain\Localization\English\Dictionaries\Default.xml" />
     <None Include="Assets\GameMain\Test\CharacterTest\ToonInput.hlsl" />
     <None Include="Assets\GameMain\DataTables\Scene.txt" />
@@ -1118,6 +1125,10 @@
       <HintPath>D:\UnityEditor\6000.0.29f1c1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.InputSystem.ForUI">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.ForUI.dll</HintPath>
       <Private>False</Private>
@@ -1268,6 +1279,10 @@
     </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Editor">

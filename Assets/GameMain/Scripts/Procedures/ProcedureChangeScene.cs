@@ -25,7 +25,7 @@ namespace KSG
         /// </summary>
         private IFsm<IProcedureManager> m_ProcedureOwner;
 
-         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
+        protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
@@ -44,6 +44,28 @@ namespace KSG
             GameEntry.Scene.LoadScene(
                 AssetUtility.GetSceneAsset(
                     GameEntry.DataNode.GetData<VarString>(Constant.ProcedureRunningData.NextSceneName)), this);
+        }
+
+        protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+
+            if (!GameEntry.DataNode.GetData<VarBoolean>(Constant.ProcedureRunningData.CanChangeProcedure))
+            {
+                return;
+            }
+
+            switch (GameEntry.DataNode.GetData<VarString>(Constant.ProcedureRunningData.NextSceneName))
+            {
+                case "Menu":
+                    ChangeState<ProcedureMenu>(m_ProcedureOwner);
+                    break;
+                case "Game":
+                    ChangeState<ProcedureGame>(m_ProcedureOwner);
+                    break;
+            }
+
+            GameEntry.DataNode.SetData<VarBoolean>(Constant.ProcedureRunningData.CanChangeProcedure, false);
         }
         private void OnLoadSceneUpdate(object sender, GameEventArgs e)
         {
@@ -81,17 +103,8 @@ namespace KSG
             {
                 GameEntry.Scene.UnloadScene(t);
             }
+            GameEntry.DataNode.SetData<VarBoolean>(Constant.ProcedureRunningData.CanChangeProcedure, true);
 
-            switch (GameEntry.DataNode.GetData<VarString>(Constant.ProcedureRunningData.NextSceneName))
-            {
-                case "Menu":
-                    ChangeState<ProcedureMenu>(m_ProcedureOwner);
-                    break;
-                // case "Game":
-                //     ChangeState<ProcedureGame>(m_ProcedureOwner);
-                //     break;
-                
-            }
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)

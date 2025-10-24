@@ -13,6 +13,11 @@ namespace KSG
             GameEntry.UI.OpenUIForm(EnumUIForm.SettingForm);
         }
 
+        public void OnStartButtonClick()
+        {
+            m_ProcedureMenu.StartGame();
+        }
+
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);

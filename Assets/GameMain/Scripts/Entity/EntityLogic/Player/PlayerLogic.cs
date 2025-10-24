@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameFramework.Event;
 using GameFramework.Fsm;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,30 +15,37 @@ namespace KSG
 		public Vector2 playerMoveInput = Vector2.zero;
 
 		[Header("默认挂载")]
-		public Rigidbody2D rb;
+		public Rigidbody rb;
 		public Animator animator;
+		public Transform CameraParent;
 		public CharacterController characterController;
-
-		protected PlayerInputAction inputAction;
-		protected PlayerInputAction.PlayerActions PlayerActions;
 
 		[Header("运行数据")]
 		public PlayerData playerData;
 		public PlayerAnimationName playerAnimationName;
-        public Vector3 playerMovement = Vector3.zero;
-
-
+		public Vector3 playerMovement = Vector3.zero;
+		protected PlayerInputAction inputActions;
+		protected PlayerInputAction.PlayerActions PlayerActions;
+		protected CameraData cameraData;
+		protected CameraLogic cameraEntityLogic;
 		protected IFsm<PlayerLogic> fsm;
 		protected List<FsmState<PlayerLogic>> stateList;
 
 		protected override void OnInit(object userData)
 		{
 			base.OnInit(userData);
+			GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
 
 			playerData = userData as PlayerData;
 
 			playerAnimationName = new PlayerAnimationName();
-			PlayerActions = inputAction.Player;
+			inputActions = new PlayerInputAction();
+			stateList = new List<FsmState<PlayerLogic>>();
+			PlayerActions = inputActions.Player;
+
+			rb = GetComponent<Rigidbody>();
+			animator = GetComponent<Animator>();
+			characterController = GetComponent<CharacterController>();
 		}
 
 		protected override void OnShow(object userData)
@@ -49,10 +57,12 @@ namespace KSG
 				Log.Error("Player data is invalid");
 				return;
 			}
+
 			CreateFsm();
-			inputAction.Enable();
-			playerAnimationName.InitializeData();
+			ShowVirtualCamera();
+			inputActions.Enable();
 			AddInputActionsCallbacks(); // 添加输入回调
+			playerAnimationName.InitializeData();
 		}
 
 		protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -60,6 +70,15 @@ namespace KSG
 			base.OnUpdate(elapseSeconds, realElapseSeconds);
 		}
 
+		protected override void OnHide(bool isShutdown, object userData)
+		{
+			base.OnHide(isShutdown, userData);
+
+			GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
+
+			inputActions.Disable();
+			RemoveInputActionsCallbacks(); // 移除输入回调
+		}
 		protected void CreateFsm()
 		{
 			AddFsmState();
@@ -84,6 +103,27 @@ namespace KSG
 			GameEntry.Fsm.DestroyFsm(fsm);
 		}
 
+
+		private void ShowVirtualCamera()
+		{
+			CameraParent = GameObject.Find("CameraRoot").transform;
+			cameraData = new CameraData(GameEntry.Entity.GenerateSerialId(), (int)EnumCamera.PlayerCamera);
+			GameEntry.Entity.ShowCamera(cameraData);
+		}
+		/// <summary>
+		/// 显示虚拟相机成功
+		/// </summary>
+		private void OnShowVirtualCameraSuccess(object sender, GameEventArgs e)
+		{
+			ShowEntitySuccessEventArgs ne = (ShowEntitySuccessEventArgs)e;
+			if (ne.EntityLogicType != typeof(CameraLogic))
+			{
+				return;
+			}
+			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.entityId), this.Entity, CameraParent, cameraData);
+			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
+			cameraEntityLogic.SetTarget(CameraParent);
+		}
 		#region Input Function
 		protected virtual void AddInputActionsCallbacks()
 		{
@@ -108,10 +148,10 @@ namespace KSG
 			playerMoveInput = Vector2.zero;
 		}
 
-        void GetRunInput(InputAction.CallbackContext ctx)
-        {
-            isRunning = !isRunning;
-        }
+		void GetRunInput(InputAction.CallbackContext ctx)
+		{
+			isRunning = !isRunning;
+		}
 		#endregion
 
 		#region Animation Function

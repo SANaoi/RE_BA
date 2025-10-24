@@ -39,6 +39,10 @@ namespace KSG
             entityComponent.ShowEntity(typeof(PlayerLogic), "Player", "Player", Constant.AssetPriority.PlayerAsset, data);
         }
 
+        public static void ShowCamera(this EntityComponent entityComponent, CameraData data)
+        {
+            entityComponent.ShowEntity(typeof(CameraLogic), "Camera", "Camera", Constant.AssetPriority.CameraAsset, data);
+        }
         private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, int priority, EntityData data)
         {
             if (data == null)
@@ -57,7 +61,7 @@ namespace KSG
 
             entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName), entityGroup, priority, data);
         }
-        
+
         private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, string entityfolder, int priority, EntityData data)
         {
             if (data == null)
@@ -79,7 +83,7 @@ namespace KSG
 
         public static int GenerateSerialId(this EntityComponent entityComponent)
         {
-            return ++s_SerialId;
+            return s_SerialId++;
         }
     }
 }

@@ -2,6 +2,7 @@
 <Dictionaries>
   <Dictionary Language="ChineseSimplified">
     <String Key="Menu.SettingButton" Value="设置" />
+    <String Key="Menu.StartButton" Value="开始" />
     <String Key="Setting.Language" Value="语言" />
     <String Key="Setting.LanguageTips" Value="更改语言需要重启游戏" />
     <String Key="Dialog.ConfirmButton" Value="确认" />

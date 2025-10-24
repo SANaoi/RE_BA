@@ -4,7 +4,7 @@
     <String Key="Menu.SettingButton" Value="Setting" />
     <String Key="Setting.Language" Value="Language" />
     <String Key="Setting.LanguageTips" Value="Changing the language requires restarting the game." />
-    <String Key="Dialog.ConfirmButton" Value="确认" />
-    <String Key="Dialog.CancelButton" Value="取消" />
+    <String Key="Dialog.ConfirmButton" Value="Comfirm" />
+    <String Key="Dialog.CancelButton" Value="Cancel" />
   </Dictionary>
 </Dictionaries>

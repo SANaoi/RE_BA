@@ -17,7 +17,7 @@ namespace KSG
         private readonly static string[] GenerateDataTables = {
             "UIForm",
             "Entity",
-            // "Camera",
+            "Camera",
             // "Item",
             // "Sound",
         };
