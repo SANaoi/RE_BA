@@ -14,6 +14,9 @@ namespace KSG
 		public bool isRunning = false;
 		public Vector2 playerMoveInput = Vector2.zero;
 
+		public bool isAim = false;
+		public bool isShoot = false;
+
 		[Header("默认挂载")]
 		public Rigidbody rb;
 		public Animator animator;
@@ -28,8 +31,10 @@ namespace KSG
 		protected PlayerInputAction.PlayerActions PlayerActions;
 		protected CameraData cameraData;
 		protected CameraLogic cameraEntityLogic;
-		protected IFsm<PlayerLogic> fsm;
-		protected List<FsmState<PlayerLogic>> stateList;
+		protected IFsm<PlayerLogic> MoveFsmManager;
+		protected IFsm<PlayerLogic> ShootFsmManager;
+		protected List<FsmState<PlayerLogic>> MoveStateList;
+		protected List<FsmState<PlayerLogic>> ShootStateList;
 
 		protected override void OnInit(object userData)
 		{
@@ -40,7 +45,8 @@ namespace KSG
 
 			playerAnimationName = new PlayerAnimationName();
 			inputActions = new PlayerInputAction();
-			stateList = new List<FsmState<PlayerLogic>>();
+			MoveStateList = new List<FsmState<PlayerLogic>>();
+			ShootStateList = new List<FsmState<PlayerLogic>>();
 			PlayerActions = inputActions.Player;
 
 			rb = GetComponent<Rigidbody>();
@@ -58,7 +64,8 @@ namespace KSG
 				return;
 			}
 
-			CreateFsm();
+			CreateMoveFsm();
+			CreateShootFsm();
 			ShowVirtualCamera();
 			inputActions.Enable();
 			AddInputActionsCallbacks(); // 添加输入回调
@@ -79,31 +86,11 @@ namespace KSG
 			inputActions.Disable();
 			RemoveInputActionsCallbacks(); // 移除输入回调
 		}
-		protected void CreateFsm()
-		{
-			AddFsmState();
-			fsm = GameEntry.Fsm.CreateFsm<PlayerLogic>(gameObject.name, this, stateList.ToArray());
-			StartState();
-		}
-
-		protected void AddFsmState()
-		{
-			stateList.Add(PlayerIdleState.Create());
-			stateList.Add(PlayerMoveState.Create());
-			stateList.Add(PlayerRunState.Create());
-		}
-
-		protected void StartState()
-		{
-			fsm.Start<PlayerIdleState>();
-		}
-
 		private void OnDestroy()
 		{
-			GameEntry.Fsm.DestroyFsm(fsm);
+			GameEntry.Fsm.DestroyFsm(MoveFsmManager);
+			GameEntry.Fsm.DestroyFsm(ShootFsmManager);
 		}
-
-
 		private void ShowVirtualCamera()
 		{
 			CameraParent = GameObject.Find("CameraRoot").transform;
@@ -124,12 +111,54 @@ namespace KSG
 			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
 		}
+
+		#region 状态机函数
+		protected void CreateMoveFsm()
+		{
+			AddFsmMoveState();
+			MoveFsmManager = GameEntry.Fsm.CreateFsm<PlayerLogic>(gameObject.name + " PlayerMoveFsm", this, MoveStateList.ToArray());
+			StartMoveState();
+		}
+		protected void CreateShootFsm()
+		{
+			AddFsmShootState();
+			ShootFsmManager = GameEntry.Fsm.CreateFsm<PlayerLogic>(gameObject.name + " PlayerShootFsm", this, ShootStateList.ToArray());
+			StartShootState();
+        }
+		protected void AddFsmMoveState()
+		{
+			MoveStateList.Add(PlayerIdleState.Create());
+			MoveStateList.Add(PlayerMoveState.Create());
+			MoveStateList.Add(PlayerRunState.Create());
+		}
+
+		protected void AddFsmShootState()
+		{
+			ShootStateList.Add(PlayerNormalState.Create());
+			ShootStateList.Add(PlayerAimState.Create());
+			ShootStateList.Add(PlayerShootState.Create());
+        }
+		protected void StartMoveState()
+		{
+			MoveFsmManager.Start<PlayerIdleState>();
+		}
+		protected void StartShootState()
+        {
+			ShootFsmManager.Start<PlayerNormalState>();
+        }
+		#endregion
 		#region Input Function
 		protected virtual void AddInputActionsCallbacks()
 		{
 			PlayerActions.Move.canceled += OnMovementCanceled;
 			PlayerActions.Move.performed += GetplayerMoveInput;
 			PlayerActions.Run.performed += GetRunInput;
+
+			PlayerActions.Aim.performed += OnPlayerAimPerformed;
+			PlayerActions.Aim.canceled += OnPlayerAimcanceled;
+
+			PlayerActions.Shoot.performed += OnPlayerShootPerformed;
+			PlayerActions.Shoot.canceled += OnPlayerShootCanceled;
 		}
 
 		protected virtual void RemoveInputActionsCallbacks()
@@ -137,6 +166,12 @@ namespace KSG
 			PlayerActions.Move.canceled -= OnMovementCanceled;
 			PlayerActions.Move.performed -= GetplayerMoveInput;
 			PlayerActions.Run.performed -= GetRunInput;
+
+			PlayerActions.Aim.performed -= OnPlayerAimPerformed;
+			PlayerActions.Aim.canceled -= OnPlayerAimcanceled;
+
+			PlayerActions.Shoot.performed -= OnPlayerShootPerformed;
+			PlayerActions.Shoot.canceled -= OnPlayerShootCanceled;
 		}
 
 		void GetplayerMoveInput(InputAction.CallbackContext context)
@@ -152,6 +187,23 @@ namespace KSG
 		{
 			isRunning = !isRunning;
 		}
+
+		void OnPlayerAimPerformed(InputAction.CallbackContext context)
+		{
+			isAim = true;
+		}
+		void OnPlayerAimcanceled(InputAction.CallbackContext context)
+		{
+			isAim = false;
+		}
+		void OnPlayerShootPerformed(InputAction.CallbackContext context)
+        {
+			isShoot = true;
+        }
+		void OnPlayerShootCanceled(InputAction.CallbackContext context)
+        {
+			isShoot = false;
+        }
 		#endregion
 
 		#region Animation Function
@@ -167,11 +219,21 @@ namespace KSG
 
 		public void StartAnimation(int animationHash)
 		{
+			if (animator.GetBool(animationHash))
+            {
+				return;
+            }
+
 			animator.SetBool(animationHash, true);
 		}
 
 		public void StopAnimation(int animationHash)
 		{
+			if (!animator.GetBool(animationHash))
+			{
+				return;
+			}
+			
 			animator.SetBool(animationHash, false);
 		}
 

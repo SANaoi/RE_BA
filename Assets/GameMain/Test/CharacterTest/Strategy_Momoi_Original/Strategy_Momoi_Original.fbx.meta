@@ -1020,8 +1020,8 @@ ModelImporter:
       name: Momoi_Original_Normal_Attack_Ing
       takeName: Momoi_Original_Normal_Attack_Ing
       internalID: -1639435879866734645
-      firstFrame: 0
-      lastFrame: 8
+      firstFrame: 4
+      lastFrame: 9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

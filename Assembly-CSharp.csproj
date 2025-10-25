@@ -66,25 +66,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerLogic.cs" />
-    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Sound\SoundExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRUIForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CharacterData.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UGuiForm.cs" />
-    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\PlayerRunState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedurePreload.cs" />
     <Compile Include="Assets\GameMain\Scripts\Utility\AssetUtility.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureChangeScene.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DataTableExtension.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerShootState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CameraData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureGame.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\SettingForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\CameraLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DREntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumUIForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRPlayer.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerMoveState.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.Setting.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\PlayerData.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityExtension.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Assets\GameMain\Scripts\UI\UIExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\Localization\XmlLocalizationHelper.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureSplash.cs" />
-    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\PlayerMoveState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureMenu.cs" />
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
@@ -109,6 +109,8 @@
     <Compile Include="Assets\GameMain\Scripts\UI\MenuForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityData.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UGuiGroupHelper.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerAimState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLaunch.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\DialogForm.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\InputProviderControl.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Builtin.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.ProcedureRunningData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerRunState.cs" />
     <Compile Include="Assets\GameMain\Scripts\BuiltinData\BuiltinDataComponent.cs" />
   </ItemGroup>
   <ItemGroup>
