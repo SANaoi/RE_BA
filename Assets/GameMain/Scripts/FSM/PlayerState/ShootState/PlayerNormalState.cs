@@ -18,15 +18,9 @@ namespace KSG
         {
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
-            if (owner.animator.GetBool(owner.playerAnimationName.isAimParameterName))
-            {
-                owner.StopAnimation(owner.playerAnimationName.isAimParameterName);
-            }
-            if (owner.animator.GetBool(owner.playerAnimationName.isShootParameterName))
-            {
-                owner.StopAnimation(owner.playerAnimationName.isShootParameterName);
-            }
-            Log.Debug("PlayerNormalState");
+            
+            owner.StopAnimation(owner.playerAnimationName.isAimParameterName);
+            owner.StopAnimation(owner.playerAnimationName.isShootParameterName);
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)
@@ -34,10 +28,12 @@ namespace KSG
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
             if (!owner.isAim && !owner.isShoot)
             {
+                owner.isAimOrShootState = false;
                 return;
             }
             else if (owner.isAim || owner.isShoot)
             {
+                owner.isAimOrShootState = true;
                 ChangeState<PlayerAimState>(fsm);
             }
         }

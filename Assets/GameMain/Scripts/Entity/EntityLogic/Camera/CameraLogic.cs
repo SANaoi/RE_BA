@@ -14,7 +14,7 @@ namespace KSG
         CinemachineFramingTransposer framingTransposer;
         public InputProviderControl inputProvider;
         float targetDistance;
-
+        private bool isDistanceDirty = false;
         [SerializeField][Range(0f, 10f)] private float defaultDistance = 2f;
         [SerializeField][Range(0f, 10f)] private float minimumDistance = 1f;
         [SerializeField][Range(0f, 10f)] private float maximumDistance = 4f;
@@ -37,10 +37,9 @@ namespace KSG
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-            // TODO 脏数据实现
             ScrollWheel();
         }
-        
+
         public void SetTarget(Transform target)
         {
             this.target = target;
@@ -53,7 +52,15 @@ namespace KSG
             var scrollValue = inputProvider.GetAxisValue(2) * zoomSensitivity;
             float currentDistance = framingTransposer.m_CameraDistance;
 
-            targetDistance = Mathf.Clamp(targetDistance + scrollValue, minimumDistance, maximumDistance);
+            // 计算新目标距离
+            float newTarget = Mathf.Clamp(targetDistance + scrollValue, minimumDistance, maximumDistance);
+            if (newTarget != targetDistance)
+            {
+                targetDistance = newTarget;
+                isDistanceDirty = true; // 标记为脏数据（有变化）
+            }
+
+            if (!isDistanceDirty) return;
 
             if (currentDistance == targetDistance)
             {

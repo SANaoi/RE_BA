@@ -19,7 +19,6 @@ namespace KSG
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
             owner.StartAnimation(owner.playerAnimationName.isAimParameterName);
-            Log.Debug("PlayerAimState");
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)

@@ -24,7 +24,9 @@ namespace KSG
 		public CharacterController characterController;
 
 		[Header("运行数据")]
+		public bool isAimOrShootState = false;
 		public PlayerData playerData;
+		public UnityEngine.Camera m_Camera;
 		public PlayerAnimationName playerAnimationName;
 		public Vector3 playerMovement = Vector3.zero;
 		protected PlayerInputAction inputActions;
@@ -41,9 +43,12 @@ namespace KSG
 			base.OnInit(userData);
 			GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
 
+			m_Camera = UnityEngine.Camera.main;
 			playerData = userData as PlayerData;
 
 			playerAnimationName = new PlayerAnimationName();
+			playerAnimationName.InitializeData();
+
 			inputActions = new PlayerInputAction();
 			MoveStateList = new List<FsmState<PlayerLogic>>();
 			ShootStateList = new List<FsmState<PlayerLogic>>();
@@ -69,12 +74,13 @@ namespace KSG
 			ShowVirtualCamera();
 			inputActions.Enable();
 			AddInputActionsCallbacks(); // 添加输入回调
-			playerAnimationName.InitializeData();
 		}
 
 		protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
 		{
 			base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+			Move();
 		}
 
 		protected override void OnHide(bool isShutdown, object userData)
@@ -111,7 +117,55 @@ namespace KSG
 			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
 		}
+		#region Move
+		void Move()
+		{
+			if (!isAimOrShootState)
+			{
+				CaculateInputDirection();
+				RotateTransform();
+			}
+			else
+			{
+				CaculateInputDirection();
+				RotateWithCamera();
+			}
 
+		}
+		void CaculateInputDirection()
+		{
+			Vector3 camForwardProjection = new Vector3(m_Camera.transform.forward.x, 0, m_Camera.transform.forward.z).normalized;
+			playerMovement = camForwardProjection * playerMoveInput.y + m_Camera.transform.right * playerMoveInput.x;
+			playerMovement = transform.InverseTransformDirection(playerMovement);
+		}
+
+		void RotateTransform()
+		{
+			float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
+			transform.Rotate(0, rad * 400 * Time.deltaTime, 0f);
+		}
+		private void RotateWithCamera()
+		{
+			// 1. 获取相机的水平方向（忽略Y轴高度，只保留XZ平面的方向）
+			Vector3 cameraHorizontalForward = m_Camera.transform.forward;
+			cameraHorizontalForward.y = 0; // 消除垂直方向的影响，确保角色在水平面上旋转
+			cameraHorizontalForward.Normalize(); // 归一化向量，避免长度异常
+
+			// 如果相机水平方向有效（非零向量）
+			if (cameraHorizontalForward.sqrMagnitude > 0.01f)
+			{
+				// 2. 计算目标旋转：让角色面向相机的水平前方
+				Quaternion targetRotation = Quaternion.LookRotation(cameraHorizontalForward);
+
+				// 3. 平滑过渡到目标旋转（避免瞬间跳转）
+				transform.rotation = Quaternion.Lerp(
+					transform.rotation,
+					targetRotation,
+					100f * Time.deltaTime
+				);
+			}
+		}
+		#endregion
 		#region 状态机函数
 		protected void CreateMoveFsm()
 		{
@@ -124,7 +178,7 @@ namespace KSG
 			AddFsmShootState();
 			ShootFsmManager = GameEntry.Fsm.CreateFsm<PlayerLogic>(gameObject.name + " PlayerShootFsm", this, ShootStateList.ToArray());
 			StartShootState();
-        }
+		}
 		protected void AddFsmMoveState()
 		{
 			MoveStateList.Add(PlayerIdleState.Create());
@@ -137,15 +191,15 @@ namespace KSG
 			ShootStateList.Add(PlayerNormalState.Create());
 			ShootStateList.Add(PlayerAimState.Create());
 			ShootStateList.Add(PlayerShootState.Create());
-        }
+		}
 		protected void StartMoveState()
 		{
 			MoveFsmManager.Start<PlayerIdleState>();
 		}
 		protected void StartShootState()
-        {
+		{
 			ShootFsmManager.Start<PlayerNormalState>();
-        }
+		}
 		#endregion
 		#region Input Function
 		protected virtual void AddInputActionsCallbacks()
@@ -197,15 +251,14 @@ namespace KSG
 			isAim = false;
 		}
 		void OnPlayerShootPerformed(InputAction.CallbackContext context)
-        {
+		{
 			isShoot = true;
-        }
+		}
 		void OnPlayerShootCanceled(InputAction.CallbackContext context)
-        {
+		{
 			isShoot = false;
-        }
+		}
 		#endregion
-
 		#region Animation Function
 		public void PlayAnimation(int animationHash, float value, float dampvale = 0.1f)
 		{
@@ -220,9 +273,9 @@ namespace KSG
 		public void StartAnimation(int animationHash)
 		{
 			if (animator.GetBool(animationHash))
-            {
+			{
 				return;
-            }
+			}
 
 			animator.SetBool(animationHash, true);
 		}
@@ -233,7 +286,7 @@ namespace KSG
 			{
 				return;
 			}
-			
+
 			animator.SetBool(animationHash, false);
 		}
 

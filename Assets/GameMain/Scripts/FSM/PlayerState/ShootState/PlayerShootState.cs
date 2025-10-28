@@ -21,7 +21,6 @@ namespace KSG
             owner = procedureOwner.Owner;
             owner.StartAnimation(owner.playerAnimationName.isShootParameterName);
 
-            Log.Debug("PlayerShootState");
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)

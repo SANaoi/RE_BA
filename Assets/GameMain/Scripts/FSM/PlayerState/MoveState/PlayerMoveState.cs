@@ -18,14 +18,21 @@ namespace KSG
         {
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
-            Log.Debug("PlayerMoveState");
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+            if (owner.isAimOrShootState)
+            {
+                owner.transform.Translate(new Vector3(owner.playerMoveInput.x,0,owner.playerMoveInput.y) * (owner.playerData.Speed * (float)0.7) * Time.deltaTime);
+            }
+            else
+            {
+                owner.transform.Translate(Vector3.forward * (owner.playerData.Speed * (float)0.7) * Time.deltaTime);
+            }
 
-            owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude * owner.playerData.Speed);
+            owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude * owner.playerData.Speed * (float)0.7);
 
             if (owner.isRunning && owner.playerMoveInput != Vector2.zero)
             {

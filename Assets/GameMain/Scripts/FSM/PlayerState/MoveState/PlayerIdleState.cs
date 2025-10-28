@@ -19,7 +19,6 @@ namespace KSG
         {
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
-            Log.Debug("PlayerIdleState");
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
