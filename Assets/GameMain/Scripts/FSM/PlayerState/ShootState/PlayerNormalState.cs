@@ -21,6 +21,9 @@ namespace KSG
             
             owner.StopAnimation(owner.playerAnimationName.isAimParameterName);
             owner.StopAnimation(owner.playerAnimationName.isShootParameterName);
+
+            owner.targetAimRiggingWeight = 0f;
+            owner.targetWeaponRiggingWeight = 0f;
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)

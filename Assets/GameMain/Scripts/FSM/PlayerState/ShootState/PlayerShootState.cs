@@ -20,7 +20,9 @@ namespace KSG
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
             owner.StartAnimation(owner.playerAnimationName.isShootParameterName);
-
+            
+            owner.targetAimRiggingWeight = 1f;
+            owner.targetWeaponRiggingWeight = 1f;
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)

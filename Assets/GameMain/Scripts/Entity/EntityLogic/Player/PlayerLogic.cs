@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameFramework.Event;
 using GameFramework.Fsm;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
 
@@ -18,13 +19,19 @@ namespace KSG
 		public bool isShoot = false;
 
 		[Header("默认挂载")]
-		public Rigidbody rb;
-		public Animator animator;
-		public Transform CameraParent;
-		public CharacterController characterController;
+		protected Rigidbody rb;
+		protected Animator animator;
+		protected Transform CameraParent;
+		protected CharacterController characterController;
+		public MultiParentConstraint WeaponRigging;
+		public MultiAimConstraint AimRigging;
+
 
 		[Header("运行数据")]
 		public bool isAimOrShootState = false;
+		public float targetWeaponRiggingWeight;
+		public float targetAimRiggingWeight;
+
 		public PlayerData playerData;
 		public UnityEngine.Camera m_Camera;
 		public PlayerAnimationName playerAnimationName;
@@ -54,9 +61,11 @@ namespace KSG
 			ShootStateList = new List<FsmState<PlayerLogic>>();
 			PlayerActions = inputActions.Player;
 
-			rb = GetComponent<Rigidbody>();
-			animator = GetComponent<Animator>();
-			characterController = GetComponent<CharacterController>();
+			rb = GetComponentInChildren<Rigidbody>();
+			animator = GetComponentInChildren<Animator>();
+			AimRigging = GetComponentInChildren<MultiAimConstraint>();
+			WeaponRigging = GetComponentInChildren<MultiParentConstraint>();
+			characterController = GetComponentInChildren<CharacterController>();
 		}
 
 		protected override void OnShow(object userData)
@@ -81,6 +90,7 @@ namespace KSG
 			base.OnUpdate(elapseSeconds, realElapseSeconds);
 
 			Move();
+			SetRigWeight();
 		}
 
 		protected override void OnHide(bool isShutdown, object userData)
@@ -117,7 +127,26 @@ namespace KSG
 			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
 		}
-		#region Move
+
+		private void SetRigWeight()
+		{
+			if (AimRigging.weight != targetAimRiggingWeight)
+			{
+				AimRigging.weight = Mathf.Lerp(AimRigging.weight, targetAimRiggingWeight, 4 * Time.deltaTime);
+				AimRigging.weight = AimRigging.weight >= 0.01f ? AimRigging.weight : 0f;
+				AimRigging.weight = AimRigging.weight <= 0.99f ? AimRigging.weight : 1f;
+
+			}
+			if (WeaponRigging.weight != targetWeaponRiggingWeight)
+			{
+				WeaponRigging.weight = Mathf.Lerp(WeaponRigging.weight, targetWeaponRiggingWeight, 4 * Time.deltaTime);
+				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
+				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
+				WeaponRigging.weight = WeaponRigging.weight <= 0.99f ? WeaponRigging.weight : 1f;
+
+			}
+		}
+		#region Move Function
 		void Move()
 		{
 			if (!isAimOrShootState)
