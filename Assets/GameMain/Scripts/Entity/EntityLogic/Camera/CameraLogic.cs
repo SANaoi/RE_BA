@@ -14,7 +14,7 @@ namespace KSG
         CinemachineFramingTransposer framingTransposer;
         public InputProviderControl inputProvider;
         float targetDistance;
-        private bool isDistanceDirty = false;
+        private bool isDistanceDirty = true;
         [SerializeField][Range(0f, 10f)] private float defaultDistance = 2f;
         [SerializeField][Range(0f, 10f)] private float minimumDistance = 1f;
         [SerializeField][Range(0f, 10f)] private float maximumDistance = 4f;
@@ -71,5 +71,17 @@ namespace KSG
 
             framingTransposer.m_CameraDistance = lerpedZoomValue;
         }
+
+        public void SetTargetPosition(Vector3 localPosition)
+        {
+            if (target == null)
+            {
+                Log.Error("Camera target is null");
+                return;
+            }
+            if (localPosition == target.position) return;
+            target.localPosition = localPosition;
+        }
+        
     }
 }

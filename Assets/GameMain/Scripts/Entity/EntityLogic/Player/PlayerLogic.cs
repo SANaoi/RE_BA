@@ -26,7 +26,6 @@ namespace KSG
 		public MultiParentConstraint WeaponRigging;
 		public MultiAimConstraint AimRigging;
 
-
 		[Header("运行数据")]
 		public bool isAimOrShootState = false;
 		public float targetWeaponRiggingWeight;
@@ -38,8 +37,8 @@ namespace KSG
 		public Vector3 playerMovement = Vector3.zero;
 		protected PlayerInputAction inputActions;
 		protected PlayerInputAction.PlayerActions PlayerActions;
-		protected CameraData cameraData;
-		protected CameraLogic cameraEntityLogic;
+		public CameraData cameraData;
+		public CameraLogic cameraEntityLogic;
 		protected IFsm<PlayerLogic> MoveFsmManager;
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
@@ -123,7 +122,7 @@ namespace KSG
 			{
 				return;
 			}
-			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.entityId), this.Entity, CameraParent, cameraData);
+			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.Id), this.Entity, CameraParent, cameraData);
 			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
 		}
@@ -140,7 +139,6 @@ namespace KSG
 			if (WeaponRigging.weight != targetWeaponRiggingWeight)
 			{
 				WeaponRigging.weight = Mathf.Lerp(WeaponRigging.weight, targetWeaponRiggingWeight, 4 * Time.deltaTime);
-				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
 				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
 				WeaponRigging.weight = WeaponRigging.weight <= 0.99f ? WeaponRigging.weight : 1f;
 
@@ -161,13 +159,14 @@ namespace KSG
 			}
 
 		}
+
 		void CaculateInputDirection()
 		{
 			Vector3 camForwardProjection = new Vector3(m_Camera.transform.forward.x, 0, m_Camera.transform.forward.z).normalized;
 			playerMovement = camForwardProjection * playerMoveInput.y + m_Camera.transform.right * playerMoveInput.x;
 			playerMovement = transform.InverseTransformDirection(playerMovement);
-		}
 
+		}
 		void RotateTransform()
 		{
 			float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
@@ -260,6 +259,7 @@ namespace KSG
 		void GetplayerMoveInput(InputAction.CallbackContext context)
 		{
 			playerMoveInput = context.ReadValue<Vector2>();
+
 		}
 		void OnMovementCanceled(InputAction.CallbackContext context)
 		{

@@ -22,6 +22,7 @@ namespace KSG
             
             owner.targetAimRiggingWeight = 1f;
             owner.targetWeaponRiggingWeight = 1f;
+
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)
