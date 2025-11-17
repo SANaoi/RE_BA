@@ -39,6 +39,8 @@ namespace KSG
 		protected PlayerInputAction.PlayerActions PlayerActions;
 		public CameraData cameraData;
 		public CameraLogic cameraEntityLogic;
+
+		protected CrosshairForm crosshairFormm;
 		protected IFsm<PlayerLogic> MoveFsmManager;
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
@@ -48,6 +50,7 @@ namespace KSG
 		{
 			base.OnInit(userData);
 			GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
+			GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			m_Camera = UnityEngine.Camera.main;
 			playerData = userData as PlayerData;
@@ -80,6 +83,7 @@ namespace KSG
 			CreateMoveFsm();
 			CreateShootFsm();
 			ShowVirtualCamera();
+			OpenCrosshairForm();
 			inputActions.Enable();
 			AddInputActionsCallbacks(); // 添加输入回调
 		}
@@ -97,6 +101,7 @@ namespace KSG
 			base.OnHide(isShutdown, userData);
 
 			GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
+			GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			inputActions.Disable();
 			RemoveInputActionsCallbacks(); // 移除输入回调
@@ -112,6 +117,11 @@ namespace KSG
 			cameraData = new CameraData(GameEntry.Entity.GenerateSerialId(), (int)EnumCamera.PlayerCamera);
 			GameEntry.Entity.ShowCamera(cameraData);
 		}
+
+		private void OpenCrosshairForm()
+        {
+			GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm);
+        }
 		/// <summary>
 		/// 显示虚拟相机成功
 		/// </summary>
@@ -125,6 +135,18 @@ namespace KSG
 			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.Id), this.Entity, CameraParent, cameraData);
 			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
+		}
+
+		private void OpenCrosshairFormSuccess(object sender, GameEventArgs e)
+		{
+			OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
+			if (ne.UIForm.Logic.GetType() != typeof(CrosshairForm))
+			{
+				Log.Warning("UIFormLogic is not CrosshairForm.");
+				return;
+			}
+
+			crosshairFormm = (CrosshairForm)ne.UIForm.Logic;
 		}
 
 		private void SetRigWeight()
@@ -186,11 +208,12 @@ namespace KSG
 				Quaternion targetRotation = Quaternion.LookRotation(cameraHorizontalForward);
 
 				// 3. 平滑过渡到目标旋转（避免瞬间跳转）
-				transform.rotation = Quaternion.Lerp(
-					transform.rotation,
-					targetRotation,
-					100f * Time.deltaTime
-				);
+				// transform.rotation = Quaternion.Lerp(
+				// 	transform.rotation,
+				// 	targetRotation,
+				// 	100f * Time.deltaTime
+				// );
+				transform.rotation = targetRotation;
 			}
 		}
 		#endregion

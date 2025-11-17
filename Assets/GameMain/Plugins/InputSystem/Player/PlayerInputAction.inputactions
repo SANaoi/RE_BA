@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Dush",
+                    "type": "Button",
+                    "id": "83c9b48d-fe4a-4774-9778-59fb033df8c5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ScrollWheel",
                     "type": "Value",
                     "id": "0ffb5570-8c8f-451e-8df8-efb137b6d54c",
@@ -141,7 +150,7 @@
                 {
                     "name": "",
                     "id": "7e60baca-12f0-41c8-a479-a3bc16118bfb",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -168,6 +177,17 @@
                     "processors": "Invert",
                     "groups": "",
                     "action": "ScrollWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dfe30e0c-0844-4cbc-8c98-a273ecdc30ee",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dush",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
