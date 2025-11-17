@@ -75,7 +75,7 @@ namespace KSG
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dush"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""83c9b48d-fe4a-4774-9778-59fb033df8c5"",
                     ""expectedControlType"": """",
@@ -211,7 +211,18 @@ namespace KSG
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dush"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c62fde4-0898-4a32-bab1-e7bab0e5e6a0"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -227,7 +238,7 @@ namespace KSG
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-            m_Player_Dush = m_Player.FindAction("Dush", throwIfNotFound: true);
+            m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
             m_Player_ScrollWheel = m_Player.FindAction("ScrollWheel", throwIfNotFound: true);
         }
 
@@ -300,7 +311,7 @@ namespace KSG
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_Shoot;
         private readonly InputAction m_Player_Run;
-        private readonly InputAction m_Player_Dush;
+        private readonly InputAction m_Player_Dash;
         private readonly InputAction m_Player_ScrollWheel;
         public struct PlayerActions
         {
@@ -311,7 +322,7 @@ namespace KSG
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
             public InputAction @Run => m_Wrapper.m_Player_Run;
-            public InputAction @Dush => m_Wrapper.m_Player_Dush;
+            public InputAction @Dash => m_Wrapper.m_Player_Dash;
             public InputAction @ScrollWheel => m_Wrapper.m_Player_ScrollWheel;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
@@ -337,9 +348,9 @@ namespace KSG
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
-                @Dush.started += instance.OnDush;
-                @Dush.performed += instance.OnDush;
-                @Dush.canceled += instance.OnDush;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
                 @ScrollWheel.started += instance.OnScrollWheel;
                 @ScrollWheel.performed += instance.OnScrollWheel;
                 @ScrollWheel.canceled += instance.OnScrollWheel;
@@ -362,9 +373,9 @@ namespace KSG
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
-                @Dush.started -= instance.OnDush;
-                @Dush.performed -= instance.OnDush;
-                @Dush.canceled -= instance.OnDush;
+                @Dash.started -= instance.OnDash;
+                @Dash.performed -= instance.OnDash;
+                @Dash.canceled -= instance.OnDash;
                 @ScrollWheel.started -= instance.OnScrollWheel;
                 @ScrollWheel.performed -= instance.OnScrollWheel;
                 @ScrollWheel.canceled -= instance.OnScrollWheel;
@@ -392,7 +403,7 @@ namespace KSG
             void OnAim(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
-            void OnDush(InputAction.CallbackContext context);
+            void OnDash(InputAction.CallbackContext context);
             void OnScrollWheel(InputAction.CallbackContext context);
         }
     }

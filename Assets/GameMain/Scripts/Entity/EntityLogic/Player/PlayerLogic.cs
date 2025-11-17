@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameFramework.Event;
 using GameFramework.Fsm;
@@ -17,9 +18,10 @@ namespace KSG
 
 		public bool isAim = false;
 		public bool isShoot = false;
+        public bool isDashing = false;
 
 		[Header("默认挂载")]
-		protected Rigidbody rb;
+		public Rigidbody rb;
 		protected Animator animator;
 		protected Transform CameraParent;
 		protected CharacterController characterController;
@@ -30,6 +32,7 @@ namespace KSG
 		public bool isAimOrShootState = false;
 		public float targetWeaponRiggingWeight;
 		public float targetAimRiggingWeight;
+        public float lastDashTime = -100f;
 
 		public PlayerData playerData;
 		public UnityEngine.Camera m_Camera;
@@ -119,9 +122,9 @@ namespace KSG
 		}
 
 		private void OpenCrosshairForm()
-        {
+		{
 			GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm);
-        }
+		}
 		/// <summary>
 		/// 显示虚拟相机成功
 		/// </summary>
@@ -235,6 +238,7 @@ namespace KSG
 			MoveStateList.Add(PlayerIdleState.Create());
 			MoveStateList.Add(PlayerMoveState.Create());
 			MoveStateList.Add(PlayerRunState.Create());
+			MoveStateList.Add(PlayerDashState.Create());
 		}
 
 		protected void AddFsmShootState()
@@ -264,6 +268,8 @@ namespace KSG
 
 			PlayerActions.Shoot.performed += OnPlayerShootPerformed;
 			PlayerActions.Shoot.canceled += OnPlayerShootCanceled;
+
+			PlayerActions.Dash.performed += OnPlayerDashPerformed;
 		}
 
 		protected virtual void RemoveInputActionsCallbacks()
@@ -277,6 +283,9 @@ namespace KSG
 
 			PlayerActions.Shoot.performed -= OnPlayerShootPerformed;
 			PlayerActions.Shoot.canceled -= OnPlayerShootCanceled;
+
+			PlayerActions.Dash.performed -= OnPlayerDashPerformed;
+
 		}
 
 		void GetplayerMoveInput(InputAction.CallbackContext context)
@@ -310,6 +319,13 @@ namespace KSG
 		{
 			isShoot = false;
 		}
+		void OnPlayerDashPerformed(InputAction.CallbackContext context)
+        {
+			if (Time.time > lastDashTime + PlayerConstantData.DashData.DASHCOOLDOWN)
+            {
+                isDashing = true;
+            }
+		}
 		#endregion
 		#region Animation Function
 		public void PlayAnimation(int animationHash, float value, float dampvale = 0.1f)
@@ -341,7 +357,10 @@ namespace KSG
 
 			animator.SetBool(animationHash, false);
 		}
-
+		public Coroutine StartDashCoroutine(IEnumerator routine)
+		{
+			return StartCoroutine(routine);
+		}
 		#endregion
 	}
 }

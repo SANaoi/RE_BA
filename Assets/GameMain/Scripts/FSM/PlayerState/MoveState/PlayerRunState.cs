@@ -34,6 +34,11 @@ namespace KSG
                 owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude);
             }
 
+            if (owner.isDashing)
+            {
+                ChangeState<PlayerDashState>(procedureOwner);
+                return;
+            }
             //切换回空闲状态
             if (owner.playerMoveInput == Vector2.zero)
             {

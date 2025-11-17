@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dush",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "83c9b48d-fe4a-4774-9778-59fb033df8c5",
                     "expectedControlType": "",
@@ -187,7 +187,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dush",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c62fde4-0898-4a32-bab1-e7bab0e5e6a0",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

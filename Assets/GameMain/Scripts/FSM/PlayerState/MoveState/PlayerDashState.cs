@@ -1,3 +1,4 @@
+using System.Collections;
 using GameFramework;
 using GameFramework.Fsm;
 using UnityEngine;
@@ -6,9 +7,10 @@ using ProcedureOwner = GameFramework.Fsm.IFsm<KSG.PlayerLogic>;
 
 namespace KSG
 {
-    public class PlayerIdleState : FsmState<PlayerLogic>, IReference
+    public class PlayerDashState : FsmState<PlayerLogic>, IReference
     {
         private PlayerLogic owner;
+
 
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
@@ -19,27 +21,12 @@ namespace KSG
         {
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
+            owner.StartCoroutine(Dash(procedureOwner));
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-            owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, 0f);
-
-            // TODO : 建议 状态多了之后 使用 状态优先级 来处理状态切换
-            if (owner.isDashing)
-            {
-                ChangeState<PlayerDashState>(procedureOwner);
-                return;
-            }
-
-            if (owner.playerMoveInput == Vector2.zero)
-            {
-                return;
-            }
-            
-            ChangeState<PlayerMoveState>(procedureOwner);
-            return;
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
@@ -51,14 +38,41 @@ namespace KSG
         {
             base.OnDestroy(procedureOwner);
         }
-        public static PlayerIdleState Create()
+        public static PlayerDashState Create()
         {
-            PlayerIdleState state = ReferencePool.Acquire<PlayerIdleState>();
+            PlayerDashState state = ReferencePool.Acquire<PlayerDashState>();
             return state;
         }
         public void Clear()
         {
             owner = null;
+        }
+
+        private IEnumerator Dash(ProcedureOwner procedureOwner)
+        {
+            if (owner.isDashing == false)
+            {
+                Log.Error("Dash State Entered but isDashing is false");
+                yield break;
+            }
+            float endTime = Time.time + PlayerConstantData.DashData.DASHDURATION;
+
+            while (Time.time < endTime)
+            {
+                owner.transform.Translate(
+                    Vector3.forward * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime
+                );
+                yield return null;
+            }
+
+            owner.isDashing = false;
+            owner.lastDashTime = Time.time;
+            if (owner.playerMoveInput == Vector2.zero)
+            {
+                ChangeState<PlayerIdleState>(procedureOwner);
+            }
+            ChangeState<PlayerMoveState>(procedureOwner);
+            
         }
     }
 }
