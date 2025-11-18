@@ -59,10 +59,17 @@ namespace KSG
 
             while (Time.time < endTime)
             {
-                owner.transform.Translate(
-                    Vector3.forward * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime
-                );
-                yield return null;
+                if (owner.isAimOrShootState)
+                {
+                    owner.transform.Translate(new Vector3(owner.playerMoveInput.x, 0, owner.playerMoveInput.y) * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime);
+                    yield return null;
+                }
+                else
+                {
+                    owner.transform.Translate(
+                    Vector3.forward * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime);
+                    yield return null;
+                }
             }
 
             owner.isDashing = false;
@@ -72,7 +79,7 @@ namespace KSG
                 ChangeState<PlayerIdleState>(procedureOwner);
             }
             ChangeState<PlayerMoveState>(procedureOwner);
-            
+
         }
     }
 }

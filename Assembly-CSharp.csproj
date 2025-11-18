@@ -76,8 +76,8 @@
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureChangeScene.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DataTableExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerShootState.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CameraData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureGame.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\SettingForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\CameraLogic.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureSplash.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerDashState.cs" />
+    <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.CrosshairData.cs" />
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureMenu.cs" />
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
@@ -140,6 +141,7 @@
     <None Include="Assets\GameMain\DataTables\UIForm.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameMain\Test\CharacterTest\ToonForwardPass.hlsl" />
+    <None Include="Assets\GameMain\Resources\Textures\kenney_prototype-textures\License.txt" />
     <None Include="Assets\GameMain\Configs\DataTableCodeTemplate.txt" />
     <None Include="Assets\GameMain\DataTables\Camera.txt" />
     <None Include="Assets\GameMain\Localization\English\Dictionaries\Default.xml" />

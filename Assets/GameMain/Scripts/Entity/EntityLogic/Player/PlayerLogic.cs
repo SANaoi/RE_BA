@@ -18,7 +18,7 @@ namespace KSG
 
 		public bool isAim = false;
 		public bool isShoot = false;
-        public bool isDashing = false;
+		public bool isDashing = false;
 
 		[Header("默认挂载")]
 		public Rigidbody rb;
@@ -32,7 +32,7 @@ namespace KSG
 		public bool isAimOrShootState = false;
 		public float targetWeaponRiggingWeight;
 		public float targetAimRiggingWeight;
-        public float lastDashTime = -100f;
+		public float lastDashTime = -100f;
 
 		public PlayerData playerData;
 		public UnityEngine.Camera m_Camera;
@@ -43,7 +43,7 @@ namespace KSG
 		public CameraData cameraData;
 		public CameraLogic cameraEntityLogic;
 
-		protected CrosshairForm crosshairFormm;
+		protected CrosshairForm crosshairForm;
 		protected IFsm<PlayerLogic> MoveFsmManager;
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
@@ -97,6 +97,7 @@ namespace KSG
 
 			Move();
 			SetRigWeight();
+			SetCrosshairSize();
 		}
 
 		protected override void OnHide(bool isShutdown, object userData)
@@ -149,7 +150,7 @@ namespace KSG
 				return;
 			}
 
-			crosshairFormm = (CrosshairForm)ne.UIForm.Logic;
+			crosshairForm = (CrosshairForm)ne.UIForm.Logic;
 		}
 
 		private void SetRigWeight()
@@ -167,6 +168,39 @@ namespace KSG
 				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
 				WeaponRigging.weight = WeaponRigging.weight <= 0.99f ? WeaponRigging.weight : 1f;
 
+			}
+		}
+
+		public void SetCrosshairSize()
+		{
+			float size = PlayerConstantData.CrosshairData.RESTINGSIZE;
+			if (isShoot)
+			{
+				size += PlayerConstantData.CrosshairData.SHOOTINGSPREAD;
+			}
+
+			if (playerMoveInput == Vector2.zero)
+			{
+				// 静止射击
+				size += 0f;
+			}
+			else if (isRunning)
+			{
+				size += PlayerConstantData.CrosshairData.RUNNINGSPREAD;
+			}
+			else if (!isRunning)
+			{
+				size += PlayerConstantData.CrosshairData.WALKINGSPREAD;
+			}
+
+			if (isAim)
+			{
+				size += PlayerConstantData.CrosshairData.AIMINGSPREAD;
+			}
+
+			if (crosshairForm != null)
+			{
+				crosshairForm.targetSize = size;
 			}
 		}
 		#region Move Function
@@ -320,11 +354,11 @@ namespace KSG
 			isShoot = false;
 		}
 		void OnPlayerDashPerformed(InputAction.CallbackContext context)
-        {
+		{
 			if (Time.time > lastDashTime + PlayerConstantData.DashData.DASHCOOLDOWN)
-            {
-                isDashing = true;
-            }
+			{
+				isDashing = true;
+			}
 		}
 		#endregion
 		#region Animation Function
