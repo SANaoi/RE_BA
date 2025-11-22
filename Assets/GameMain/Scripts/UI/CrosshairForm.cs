@@ -30,7 +30,6 @@ namespace KSG
                 {
                     currentSize = targetSize;
                 }
-                Log.Debug(currentSize);
                 crosshairTransform.sizeDelta = new Vector2(currentSize, currentSize);
             }
         }

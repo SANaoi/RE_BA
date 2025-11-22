@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-11-22 23:21:06.377
+// 生成时间：2025-11-22 23:21:06.388
 //------------------------------------------------------------
 
 using GameFramework;
@@ -19,14 +19,14 @@ using UnityGameFramework.Runtime;
 namespace KSG
 {
     /// <summary>
-    /// 实体配置表。
+    /// 子弹数据配置表。
     /// </summary>
-    public class DREntity : DataRowBase
+    public class DRProjectile : DataRowBase
     {
         private int m_Id = 0;
 
         /// <summary>
-        /// 获取实体编号。
+        /// 获取配置编号。
         /// </summary>
         public override int Id
         {
@@ -37,9 +37,36 @@ namespace KSG
         }
 
         /// <summary>
-        /// 获取资源名称。
+        /// 获取伤害。
         /// </summary>
-        public string AssetName
+        public float Damage
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取射速。
+        /// </summary>
+        public float Speed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取溅射伤害。
+        /// </summary>
+        public float SplashDamage
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取溅射范围。
+        /// </summary>
+        public float SplashRange
         {
             get;
             private set;
@@ -57,7 +84,10 @@ namespace KSG
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            AssetName = columnStrings[index++];
+            Damage = float.Parse(columnStrings[index++]);
+            Speed = float.Parse(columnStrings[index++]);
+            SplashDamage = float.Parse(columnStrings[index++]);
+            SplashRange = float.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -70,7 +100,10 @@ namespace KSG
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    AssetName = binaryReader.ReadString();
+                    Damage = binaryReader.ReadSingle();
+                    Speed = binaryReader.ReadSingle();
+                    SplashDamage = binaryReader.ReadSingle();
+                    SplashRange = binaryReader.ReadSingle();
                 }
             }
 

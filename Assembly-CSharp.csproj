@@ -59,7 +59,7 @@
     <UnityVersion>6000.0.29f1c1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\SAN_K\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\SAN_K\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -93,6 +93,7 @@
     <Compile Include="Assets\GameMain\Test\MultiImageController.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.AssetPriority.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumCamera.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Event\ShowEntityInLevelEventArgs.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Custom.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerAnimationName.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\BinaryReaderExtension.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.CrosshairData.cs" />
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureMenu.cs" />
+    <Compile Include="Assets\GameMain\Scripts\DataTable\DRProjectile.cs" />
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UpdateResourceForm.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityData.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UGuiGroupHelper.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerAimState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\EnitityTargetable.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLaunch.cs" />
@@ -141,9 +144,10 @@
     <None Include="Assets\GameMain\DataTables\UIForm.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameMain\Test\CharacterTest\ToonForwardPass.hlsl" />
-    <None Include="Assets\GameMain\Resources\Textures\kenney_prototype-textures\License.txt" />
+    <None Include="Assets\GameMain\Res\Textures\kenney_prototype-textures\License.txt" />
     <None Include="Assets\GameMain\Configs\DataTableCodeTemplate.txt" />
     <None Include="Assets\GameMain\DataTables\Camera.txt" />
+    <None Include="Assets\GameMain\DataTables\Projectile.txt" />
     <None Include="Assets\GameMain\Localization\English\Dictionaries\Default.xml" />
     <None Include="Assets\GameMain\Test\CharacterTest\ToonInput.hlsl" />
     <None Include="Assets\GameMain\DataTables\Scene.txt" />

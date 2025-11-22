@@ -10,7 +10,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-	public class PlayerLogic : Entity
+	public class PlayerLogic : EnitityTargetable
 	{
 		[Header("玩家输入")]
 		public bool isRunning = false;
@@ -48,6 +48,17 @@ namespace KSG
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
 		protected List<FsmState<PlayerLogic>> ShootStateList;
+
+        protected override float MaxHP
+		{
+			get 
+			{ 
+				if (playerData != null)
+					return playerData.MaxHP; 
+				else
+					return 0;
+			}
+        }
 
 		protected override void OnInit(object userData)
 		{

@@ -9,7 +9,7 @@ namespace KSG
         public Transform target;
 
         CameraData cameraData;
-        public UnityEngine.Camera m_Camera;
+        private UnityEngine.Camera m_Camera;
         public CinemachineVirtualCamera virtualCamera;
         CinemachineFramingTransposer framingTransposer;
         public InputProviderControl inputProvider;
@@ -17,7 +17,7 @@ namespace KSG
         private bool isDistanceDirty = true;
         [SerializeField][Range(0f, 10f)] private float defaultDistance = 2f;
         [SerializeField][Range(0f, 10f)] private float minimumDistance = 1f;
-        [SerializeField][Range(0f, 10f)] private float maximumDistance = 4f;
+        [SerializeField][Range(0f, 10f)] private float maximumDistance = 3f;
         [SerializeField][Range(0f, 10f)] private float smoothing = 4f;
         [SerializeField][Range(0f, 10f)] private float zoomSensitivity = 0.5f;
 
