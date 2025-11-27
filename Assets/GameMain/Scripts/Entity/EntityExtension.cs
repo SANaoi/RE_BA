@@ -12,38 +12,37 @@ namespace KSG
         // 正值用于和服务器通信的实体（如玩家角色、NPC、怪等，服务器只产生正值）
         // 负值用于本地生成的临时实体（如特效、FakeObject等）
         private static int s_SerialId = 0;
-
-        public static Entity GetGameEntity(this EntityComponent entityComponent, int entityId)
+        public static EntityBase GetGameEntity(this EntityComponent entityComponent, int entityId)
         {
-            UnityGameFramework.Runtime.Entity entity = entityComponent.GetEntity(entityId);
+            Entity entity = entityComponent.GetEntity(entityId);
             if (entity == null)
             {
                 return null;
             }
 
-            return (Entity)entity.Logic;
+            return (EntityBase)entity.Logic;
         }
 
-        public static void HideEntity(this EntityComponent entityComponent, Entity entity)
+        public static void HideEntity(this EntityComponent entityComponent, EntityBase entity)
         {
             entityComponent.HideEntity(entity.Entity);
         }
 
-        public static void AttachEntity(this EntityComponent entityComponent, Entity entity, int ownerId, string parentTransformPath = null, object userData = null)
+        public static void AttachEntity(this EntityComponent entityComponent, EntityBase entity, int ownerId, string parentTransformPath = null, object userData = null)
         {
             entityComponent.AttachEntity(entity.Entity, ownerId, parentTransformPath, userData);
         }
 
-        public static void ShowPlayer(this EntityComponent entityComponent, PlayerData data)
+        public static void ShowPlayer(this EntityComponent entityComponent, EneityDataPlayer data)
         {
             entityComponent.ShowEntity(typeof(PlayerLogic), "Player", "Player", Constant.AssetPriority.PlayerAsset, data);
         }
 
-        public static void ShowCamera(this EntityComponent entityComponent, CameraData data)
+        public static void ShowCamera(this EntityComponent entityComponent, EneityDataCamera data)
         {
             entityComponent.ShowEntity(typeof(CameraLogic), "Camera", "Camera", Constant.AssetPriority.CameraAsset, data);
         }
-        private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, int priority, EntityData data)
+        public static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, string entityfolder, Action<Entity> onShowSuccess, int priority, EntityData data)
         {
             if (data == null)
             {
@@ -58,11 +57,11 @@ namespace KSG
                 Log.Warning("Can not load entity id '{0}' from data table.", data.TypeId.ToString());
                 return;
             }
-
-            entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName), entityGroup, priority, data);
+            entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName, entityfolder), entityGroup, priority, data);
+        
         }
 
-        private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, string entityfolder, int priority, EntityData data)
+        public static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, string entityfolder, int priority, EntityData data)
         {
             if (data == null)
             {
@@ -83,7 +82,7 @@ namespace KSG
 
         public static int GenerateSerialId(this EntityComponent entityComponent)
         {
-            return s_SerialId++;
+            return ++s_SerialId;
         }
     }
 }

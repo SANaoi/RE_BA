@@ -61,7 +61,7 @@ namespace KSG
                     ChangeState<ProcedureMenu>(m_ProcedureOwner);
                     break;
                 case "Game":
-                    ChangeState<ProcedureGame>(m_ProcedureOwner);
+                    ChangeState<ProcedureLevel>(m_ProcedureOwner);
                     break;
             }
 

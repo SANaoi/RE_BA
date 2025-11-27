@@ -4,11 +4,11 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public class CameraLogic : Entity
+    public class CameraLogic : EntityBase
     {
         public Transform target;
 
-        CameraData cameraData;
+        EneityDataCamera cameraData;
         private UnityEngine.Camera m_Camera;
         public CinemachineVirtualCamera virtualCamera;
         CinemachineFramingTransposer framingTransposer;
@@ -25,7 +25,7 @@ namespace KSG
         {
             base.OnInit(userData);
 
-            cameraData = userData as CameraData;
+            cameraData = userData as EneityDataCamera;
             virtualCamera = GetComponent<CinemachineVirtualCamera>();
             framingTransposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
             inputProvider = GetComponent<InputProviderControl>();

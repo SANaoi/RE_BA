@@ -4,7 +4,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public abstract class Entity : EntityLogic
+    public abstract class EntityBase : EntityLogic
     {
         [SerializeField]
         private EntityData m_EntityData = null;

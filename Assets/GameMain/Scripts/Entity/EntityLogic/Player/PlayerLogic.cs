@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFramework;
 using GameFramework.Event;
 using GameFramework.Fsm;
 using UnityEngine;
@@ -34,13 +35,13 @@ namespace KSG
 		public float targetAimRiggingWeight;
 		public float lastDashTime = -100f;
 
-		public PlayerData playerData;
+		public EneityDataPlayer playerData;
 		public UnityEngine.Camera m_Camera;
 		public PlayerAnimationName playerAnimationName;
 		public Vector3 playerMovement = Vector3.zero;
 		protected PlayerInputAction inputActions;
 		protected PlayerInputAction.PlayerActions PlayerActions;
-		public CameraData cameraData;
+		public EneityDataCamera cameraData;
 		public CameraLogic cameraEntityLogic;
 
 		protected CrosshairForm crosshairForm;
@@ -49,25 +50,25 @@ namespace KSG
 		protected List<FsmState<PlayerLogic>> MoveStateList;
 		protected List<FsmState<PlayerLogic>> ShootStateList;
 
-        protected override float MaxHP
+		protected override float MaxHP
 		{
-			get 
-			{ 
+			get
+			{
 				if (playerData != null)
-					return playerData.MaxHP; 
+					return playerData.MaxHP;
 				else
 					return 0;
 			}
-        }
+		}
 
 		protected override void OnInit(object userData)
 		{
 			base.OnInit(userData);
-			GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
+			// GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
 			GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
-			m_Camera = UnityEngine.Camera.main;
-			playerData = userData as PlayerData;
+			m_Camera = Camera.main;
+			playerData = userData as EneityDataPlayer;
 
 			playerAnimationName = new PlayerAnimationName();
 			playerAnimationName.InitializeData();
@@ -115,7 +116,7 @@ namespace KSG
 		{
 			base.OnHide(isShutdown, userData);
 
-			GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
+			// GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
 			GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			inputActions.Disable();
@@ -123,14 +124,41 @@ namespace KSG
 		}
 		private void OnDestroy()
 		{
+			// 取出状态机所有状态
+			FsmState<PlayerLogic>[] MoveStates = MoveFsmManager.GetAllStates();
+			FsmState<PlayerLogic>[] ShootStates = ShootFsmManager.GetAllStates();
+
+
 			GameEntry.Fsm.DestroyFsm(MoveFsmManager);
 			GameEntry.Fsm.DestroyFsm(ShootFsmManager);
+
+			//把状态实例归还引用池
+			foreach (var item in MoveStates)
+			{
+				ReferencePool.Release((IReference)item);
+			}
+			foreach (var item in ShootStates)
+			{
+				ReferencePool.Release((IReference)item);
+			}
 		}
 		private void ShowVirtualCamera()
 		{
 			CameraParent = GameObject.Find("CameraRoot").transform;
-			cameraData = new CameraData(GameEntry.Entity.GenerateSerialId(), (int)EnumCamera.PlayerCamera);
-			GameEntry.Entity.ShowCamera(cameraData);
+			cameraData = new EneityDataCamera(GameEntry.Entity.GenerateSerialId(), (int)EnumCamera.PlayerCamera);
+			GameEntry.Event.Fire
+			(
+				this, ShowEntityInLevelEventArgs.Create
+				(
+					typeof(CameraLogic), 
+					"Camera", 
+					"Camera", 
+					Constant.AssetPriority.CameraAsset, 
+					OnShowVirtualCameraSuccess, 
+					cameraData
+				)
+			);
+			// GameEntry.Entity.ShowCamera(cameraData);
 		}
 
 		private void OpenCrosshairForm()
@@ -140,15 +168,10 @@ namespace KSG
 		/// <summary>
 		/// 显示虚拟相机成功
 		/// </summary>
-		private void OnShowVirtualCameraSuccess(object sender, GameEventArgs e)
+		private void OnShowVirtualCameraSuccess(Entity entity)
 		{
-			ShowEntitySuccessEventArgs ne = (ShowEntitySuccessEventArgs)e;
-			if (ne.EntityLogicType != typeof(CameraLogic))
-			{
-				return;
-			}
 			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.Id), this.Entity, CameraParent, cameraData);
-			cameraEntityLogic = GameEntry.Entity.GetEntity(cameraData.Id).Logic as CameraLogic;
+			cameraEntityLogic = entity.Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
 		}
 

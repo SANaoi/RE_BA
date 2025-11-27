@@ -65,20 +65,20 @@
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\EntityBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Sound\SoundExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRUIForm.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CharacterData.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UGuiForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedurePreload.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EneityDataCharacter.cs" />
     <Compile Include="Assets\GameMain\Scripts\Utility\AssetUtility.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureChangeScene.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DataTableExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerShootState.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\CameraData.cs" />
     <Compile Include="Assets\GameMain\Scripts\Plugins\InputSystem\PlayerInputAction.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureGame.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Level\LevelControl.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\SettingForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\CameraLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerAimRigController.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRPlayer.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerMoveState.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.Setting.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\PlayerData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EneityDataPlayer.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityExtension.cs" />
     <Compile Include="Assets\GameMain\Test\TimelineTest\DialogueTimelineController.cs" />
     <Compile Include="Assets\GameMain\Test\MultiImageController.cs" />
@@ -97,20 +97,22 @@
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Custom.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerAnimationName.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\BinaryReaderExtension.cs" />
-    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Entity.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UIExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\Localization\XmlLocalizationHelper.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureSplash.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerDashState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Level\IPause.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.CrosshairData.cs" />
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureMenu.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRProjectile.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLevel.cs" />
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UpdateResourceForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumEntity.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EneityDataCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRScene.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.DashData.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\MenuForm.cs" />

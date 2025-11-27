@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace KSG
 {
-    public class CameraData : EntityData
+    public class EneityDataCamera : EntityData
     {
         private Vector3 m_defaultLocalPosition;
         public Vector3 DefaultLocalPosition
@@ -13,7 +13,7 @@ namespace KSG
                 return m_defaultLocalPosition;
             }
         }
-        public CameraData(int entityId, int typeId) : base(entityId, typeId)
+        public EneityDataCamera(int entityId, int typeId) : base(entityId, typeId)
         {
             IDataTable<DRCamera> dtCamera = GameEntry.DataTable.GetDataTable<DRCamera>();
             DRCamera drCamera = dtCamera.GetDataRow(TypeId);

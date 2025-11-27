@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace KSG
 {
-    public class PlayerData : CharacterData
+    public class EneityDataPlayer : EneityDataCharacter
     {
         [SerializeField]
         private float m_MaxHP = 0;
         [SerializeField]
         private float m_Speed = 0;
-        public PlayerData(int entityId, int typeId)
+        public EneityDataPlayer(int entityId, int typeId)
             : base(entityId, typeId, CampType.Player)
         {
             IDataTable<DRPlayer> dtPlayer = GameEntry.DataTable.GetDataTable<DRPlayer>();

@@ -52,7 +52,7 @@ namespace KSG
 
         public static string GetFontAsset(string assetName)
         {
-            return Utility.Text.Format("Assets/GameMain/Resources/Fonts/{0}.ttf", assetName);
+            return Utility.Text.Format("Assets/GameMain/Res/Fonts/{0}.ttf", assetName);
         }
         public static string GetSpriteAsset()
         {
