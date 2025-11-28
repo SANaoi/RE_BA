@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace KSG
 {
-	public class EneityDataCharacter : EntityData
+	public class EntityDataCharacter : EntityData
 	{
 		[SerializeField]
         private int m_OwnerId = 0;
@@ -10,7 +10,7 @@ namespace KSG
         [SerializeField]
         private CampType m_OwnerCamp = CampType.Unknown;
 
-		public EneityDataCharacter(int entityId, int typeId, CampType ownerCamp) : base(entityId, typeId)
+		public EntityDataCharacter(int entityId, int typeId, CampType ownerCamp) : base(entityId, typeId)
 		{
             m_OwnerCamp = ownerCamp;
 		}

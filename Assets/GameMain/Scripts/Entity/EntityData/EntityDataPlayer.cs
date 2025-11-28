@@ -3,13 +3,15 @@ using UnityEngine;
 
 namespace KSG
 {
-    public class EneityDataPlayer : EneityDataCharacter
+    public class EntityDataPlayer : EntityDataCharacter
     {
         [SerializeField]
         private float m_MaxHP = 0;
         [SerializeField]
         private float m_Speed = 0;
-        public EneityDataPlayer(int entityId, int typeId)
+        [SerializeField]
+        private int m_CameraId = 0;
+        public EntityDataPlayer(int entityId, int typeId)
             : base(entityId, typeId, CampType.Player)
         {
             IDataTable<DRPlayer> dtPlayer = GameEntry.DataTable.GetDataTable<DRPlayer>();
@@ -21,6 +23,7 @@ namespace KSG
 
             m_MaxHP = drPlayer.HP;
             m_Speed = drPlayer.Speed;
+            m_CameraId = drPlayer.CameraId0;
 
         }
 
@@ -42,6 +45,17 @@ namespace KSG
             get
             {
                 return m_Speed;
+            }
+        }
+
+        /// <summary>
+        /// 相机编号。
+        /// </summary>
+        public int CameraId
+        {
+            get
+            {
+                return m_CameraId;
             }
         }
     }

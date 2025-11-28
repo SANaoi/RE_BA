@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-11-22 23:21:06.383
+// 生成时间：2025-11-29 02:30:48.915
 //------------------------------------------------------------
 
 using GameFramework;
@@ -26,7 +26,7 @@ namespace KSG
         private int m_Id = 0;
 
         /// <summary>
-        /// 获取配置编号。
+        /// 获取角色编号。
         /// </summary>
         public override int Id
         {
@@ -34,15 +34,6 @@ namespace KSG
             {
                 return m_Id;
             }
-        }
-
-        /// <summary>
-        /// 获取名字。
-        /// </summary>
-        public string NameId
-        {
-            get;
-            private set;
         }
 
         /// <summary>
@@ -63,6 +54,15 @@ namespace KSG
             private set;
         }
 
+        /// <summary>
+        /// 获取相机编号。
+        /// </summary>
+        public int CameraId0
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -75,9 +75,9 @@ namespace KSG
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            NameId = columnStrings[index++];
             HP = float.Parse(columnStrings[index++]);
             Speed = float.Parse(columnStrings[index++]);
+            CameraId0 = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -90,9 +90,9 @@ namespace KSG
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    NameId = binaryReader.ReadString();
                     HP = binaryReader.ReadSingle();
                     Speed = binaryReader.ReadSingle();
+                    CameraId0 = binaryReader.Read7BitEncodedInt32();
                 }
             }
 
@@ -100,9 +100,45 @@ namespace KSG
             return true;
         }
 
+        private KeyValuePair<int, int>[] m_CameraId = null;
+
+        public int CameraIdCount
+        {
+            get
+            {
+                return m_CameraId.Length;
+            }
+        }
+
+        public int GetCameraId(int id)
+        {
+            foreach (KeyValuePair<int, int> i in m_CameraId)
+            {
+                if (i.Key == id)
+                {
+                    return i.Value;
+                }
+            }
+
+            throw new GameFrameworkException(Utility.Text.Format("GetCameraId with invalid id '{0}'.", id.ToString()));
+        }
+
+        public int GetCameraIdAt(int index)
+        {
+            if (index < 0 || index >= m_CameraId.Length)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("GetCameraIdAt with invalid index '{0}'.", index.ToString()));
+            }
+
+            return m_CameraId[index].Value;
+        }
+
         private void GeneratePropertyArray()
         {
-
+            m_CameraId = new KeyValuePair<int, int>[]
+            {
+                new KeyValuePair<int, int>(0, CameraId0),
+            };
         }
     }
 }

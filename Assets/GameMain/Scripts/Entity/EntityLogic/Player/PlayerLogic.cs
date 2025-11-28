@@ -35,13 +35,13 @@ namespace KSG
 		public float targetAimRiggingWeight;
 		public float lastDashTime = -100f;
 
-		public EneityDataPlayer playerData;
+		public EntityDataPlayer playerData;
 		public UnityEngine.Camera m_Camera;
 		public PlayerAnimationName playerAnimationName;
 		public Vector3 playerMovement = Vector3.zero;
 		protected PlayerInputAction inputActions;
 		protected PlayerInputAction.PlayerActions PlayerActions;
-		public EneityDataCamera cameraData;
+		public EntityDataCamera cameraData;
 		public CameraLogic cameraEntityLogic;
 
 		protected CrosshairForm crosshairForm;
@@ -68,7 +68,7 @@ namespace KSG
 			GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			m_Camera = Camera.main;
-			playerData = userData as EneityDataPlayer;
+			playerData = userData as EntityDataPlayer;
 
 			playerAnimationName = new PlayerAnimationName();
 			playerAnimationName.InitializeData();
@@ -145,7 +145,7 @@ namespace KSG
 		private void ShowVirtualCamera()
 		{
 			CameraParent = GameObject.Find("CameraRoot").transform;
-			cameraData = new EneityDataCamera(GameEntry.Entity.GenerateSerialId(), (int)EnumCamera.PlayerCamera);
+			cameraData = new EntityDataCamera(GameEntry.Entity.GenerateSerialId(), playerData.CameraId);
 			GameEntry.Event.Fire
 			(
 				this, ShowEntityInLevelEventArgs.Create

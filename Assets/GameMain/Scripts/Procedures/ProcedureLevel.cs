@@ -1,4 +1,5 @@
 using System;
+using GameFramework;
 using GameFramework.Event;
 using GameFramework.Fsm;
 using GameFramework.Procedure;
@@ -30,7 +31,16 @@ namespace KSG
             
             this.m_ProcedureOwner = procedureOwner; 
             m_LevelControl.OnEnter();
-            GameEntry.Entity.ShowPlayer(new EneityDataPlayer(GameEntry.Entity.GenerateSerialId(), 1001));
+            GameEntry.Entity.ShowPlayer(new EntityDataPlayer(GameEntry.Entity.GenerateSerialId(), 1001));
+        }
+        protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
+        {
+            base.OnLeave(procedureOwner, isShutdown);
+            GameEntry.Event.Unsubscribe(ShowEntityInLevelEventArgs.EventId, OnShowEntityInLevel);
+
+            m_LevelControl.Quick();
+            ReferencePool.Release(m_LevelControl);
+            m_LevelControl = null;
         }
 
         private void OnShowEntityInLevel(object sender, GameEventArgs e)

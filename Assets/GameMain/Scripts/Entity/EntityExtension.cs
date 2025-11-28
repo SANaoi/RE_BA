@@ -33,12 +33,12 @@ namespace KSG
             entityComponent.AttachEntity(entity.Entity, ownerId, parentTransformPath, userData);
         }
 
-        public static void ShowPlayer(this EntityComponent entityComponent, EneityDataPlayer data)
+        public static void ShowPlayer(this EntityComponent entityComponent, EntityDataPlayer data)
         {
             entityComponent.ShowEntity(typeof(PlayerLogic), "Player", "Player", Constant.AssetPriority.PlayerAsset, data);
         }
 
-        public static void ShowCamera(this EntityComponent entityComponent, EneityDataCamera data)
+        public static void ShowCamera(this EntityComponent entityComponent, EntityDataCamera data)
         {
             entityComponent.ShowEntity(typeof(CameraLogic), "Camera", "Camera", Constant.AssetPriority.CameraAsset, data);
         }

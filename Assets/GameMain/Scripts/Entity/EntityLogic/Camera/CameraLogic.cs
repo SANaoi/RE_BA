@@ -8,7 +8,7 @@ namespace KSG
     {
         public Transform target;
 
-        EneityDataCamera cameraData;
+        EntityDataCamera cameraData;
         private UnityEngine.Camera m_Camera;
         public CinemachineVirtualCamera virtualCamera;
         CinemachineFramingTransposer framingTransposer;
@@ -25,7 +25,7 @@ namespace KSG
         {
             base.OnInit(userData);
 
-            cameraData = userData as EneityDataCamera;
+            cameraData = userData as EntityDataCamera;
             virtualCamera = GetComponent<CinemachineVirtualCamera>();
             framingTransposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
             inputProvider = GetComponent<InputProviderControl>();

@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-11-22 23:21:06.352
+// 生成时间：2025-11-29 02:30:48.888
 //------------------------------------------------------------
 
 using GameFramework;
@@ -34,15 +34,6 @@ namespace KSG
             {
                 return m_Id;
             }
-        }
-
-        /// <summary>
-        /// 获取资源名称。
-        /// </summary>
-        public string AssetName
-        {
-            get;
-            private set;
         }
 
         /// <summary>
@@ -75,7 +66,6 @@ namespace KSG
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            AssetName = columnStrings[index++];
             GroupName = columnStrings[index++];
             DefaultLocalPosition = DataTableExtension.ParseVector3(columnStrings[index++]);
 
@@ -90,7 +80,6 @@ namespace KSG
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    AssetName = binaryReader.ReadString();
                     GroupName = binaryReader.ReadString();
                     DefaultLocalPosition = binaryReader.ReadVector3();
                 }
