@@ -3,7 +3,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-	public class DialogForm : UGuiForm
+	public class DialogForm : UGuiFormEx
 	{
 		[SerializeField]
 		private GameObject m_QuitButton = null;

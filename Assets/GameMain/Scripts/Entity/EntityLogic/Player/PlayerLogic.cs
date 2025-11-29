@@ -44,7 +44,6 @@ namespace KSG
 		public EntityDataCamera cameraData;
 		public CameraLogic cameraEntityLogic;
 
-		protected CrosshairForm crosshairForm;
 		protected IFsm<PlayerLogic> MoveFsmManager;
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
@@ -64,8 +63,6 @@ namespace KSG
 		protected override void OnInit(object userData)
 		{
 			base.OnInit(userData);
-			// GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
-			GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			m_Camera = Camera.main;
 			playerData = userData as EntityDataPlayer;
@@ -98,7 +95,6 @@ namespace KSG
 			CreateMoveFsm();
 			CreateShootFsm();
 			ShowVirtualCamera();
-			OpenCrosshairForm();
 			inputActions.Enable();
 			AddInputActionsCallbacks(); // 添加输入回调
 		}
@@ -115,9 +111,6 @@ namespace KSG
 		protected override void OnHide(bool isShutdown, object userData)
 		{
 			base.OnHide(isShutdown, userData);
-
-			// GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowVirtualCameraSuccess);
-			GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OpenCrosshairFormSuccess);
 
 			inputActions.Disable();
 			RemoveInputActionsCallbacks(); // 移除输入回调
@@ -145,46 +138,27 @@ namespace KSG
 		private void ShowVirtualCamera()
 		{
 			CameraParent = GameObject.Find("CameraRoot").transform;
-			cameraData = new EntityDataCamera(GameEntry.Entity.GenerateSerialId(), playerData.CameraId);
+			cameraData = new EntityDataCamera(GameEntry.Entity.GenerateSerialId(), (int)playerData.CameraId);
 			GameEntry.Event.Fire
 			(
 				this, ShowEntityInLevelEventArgs.Create
 				(
-					typeof(CameraLogic), 
-					"Camera", 
-					"Camera", 
-					Constant.AssetPriority.CameraAsset, 
-					OnShowVirtualCameraSuccess, 
+					typeof(CameraLogic),
+					"Camera",
+					"Camera",
+					Constant.AssetPriority.CameraAsset,
+					OnShowVirtualCameraSuccess,
 					cameraData
 				)
 			);
-			// GameEntry.Entity.ShowCamera(cameraData);
-		}
-
-		private void OpenCrosshairForm()
-		{
-			GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm);
 		}
 		/// <summary>
 		/// 显示虚拟相机成功
 		/// </summary>
 		private void OnShowVirtualCameraSuccess(Entity entity)
 		{
-			// GameEntry.Entity.AttachEntity(GameEntry.Entity.GetEntity(cameraData.Id), this.Entity, CameraParent, cameraData);
 			cameraEntityLogic = entity.Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(CameraParent);
-		}
-
-		private void OpenCrosshairFormSuccess(object sender, GameEventArgs e)
-		{
-			OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
-			if (ne.UIForm.Logic.GetType() != typeof(CrosshairForm))
-			{
-				Log.Warning("UIFormLogic is not CrosshairForm.");
-				return;
-			}
-
-			crosshairForm = (CrosshairForm)ne.UIForm.Logic;
 		}
 
 		private void SetRigWeight()
@@ -206,6 +180,12 @@ namespace KSG
 		}
 
 		public void SetCrosshairSize()
+		{
+			float size = CalculateSize();
+			GameEntry.Event.Fire(this, PlayerCrosshairChangeEventArgs.Create(size));
+		}
+
+		private float CalculateSize()
 		{
 			float size = PlayerConstantData.CrosshairData.RESTINGSIZE;
 			if (isShoot)
@@ -231,11 +211,7 @@ namespace KSG
 			{
 				size += PlayerConstantData.CrosshairData.AIMINGSPREAD;
 			}
-
-			if (crosshairForm != null)
-			{
-				crosshairForm.targetSize = size;
-			}
+			return size;
 		}
 		#region Move Function
 		void Move()

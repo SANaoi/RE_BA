@@ -1,9 +1,10 @@
+using GameFramework.Event;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public class CrosshairForm : UGuiForm
+    public class CrosshairForm : UGuiFormEx
     {
 
         [SerializeField] private RectTransform crosshairTransform;
@@ -15,10 +16,16 @@ namespace KSG
             set { _targetSize = value; } 
         }
         private float _targetSize;
+        protected override void OnOpen(object userData)
+        {
+            base.OnOpen(userData);
+
+            Subscribe(PlayerCrosshairChangeEventArgs.EventId, OnPlayerCrosshairChange);
+        }
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-
+            
             if (currentSize != targetSize)
             {
                 if (targetSize >= PlayerConstantData.CrosshairData.MAXSIZE)
@@ -32,6 +39,20 @@ namespace KSG
                 }
                 crosshairTransform.sizeDelta = new Vector2(currentSize, currentSize);
             }
+        }
+
+        protected override void OnClose(bool isShutdown, object userData)
+        {
+            base.OnClose(isShutdown, userData);
+            UnSubscribe(PlayerCrosshairChangeEventArgs.EventId, OnPlayerCrosshairChange);
+        }
+        
+
+        private void OnPlayerCrosshairChange(object sender, GameEventArgs e)
+        {
+            PlayerCrosshairChangeEventArgs ne = (PlayerCrosshairChangeEventArgs)e;
+            targetSize = ne.CrosshairSize;
+
         }
     }
 }

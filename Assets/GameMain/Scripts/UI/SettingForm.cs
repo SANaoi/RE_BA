@@ -5,7 +5,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public class SettingForm : UGuiForm
+    public class SettingForm : UGuiFormEx
     {
 
         [SerializeField]

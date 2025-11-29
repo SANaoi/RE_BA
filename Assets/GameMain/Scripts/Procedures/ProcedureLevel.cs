@@ -31,7 +31,7 @@ namespace KSG
             
             this.m_ProcedureOwner = procedureOwner; 
             m_LevelControl.OnEnter();
-            GameEntry.Entity.ShowPlayer(new EntityDataPlayer(GameEntry.Entity.GenerateSerialId(), 1001));
+            
         }
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
         {

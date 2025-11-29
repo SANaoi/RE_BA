@@ -3,7 +3,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public class MenuForm : UGuiForm
+    public class MenuForm : UGuiFormEx
     {
 
         private ProcedureMenu m_ProcedureMenu = null;
