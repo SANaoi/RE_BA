@@ -138,7 +138,7 @@ namespace KSG
 		private void ShowVirtualCamera()
 		{
 			CameraParent = GameObject.Find("CameraRoot").transform;
-			cameraData = new EntityDataCamera(GameEntry.Entity.GenerateSerialId(), (int)playerData.CameraId);
+			cameraData = EntityDataCamera.Create(GameEntry.Entity.GenerateSerialId(), (int)playerData.CameraId);
 			GameEntry.Event.Fire
 			(
 				this, ShowEntityInLevelEventArgs.Create

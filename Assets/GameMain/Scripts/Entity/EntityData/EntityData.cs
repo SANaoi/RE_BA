@@ -6,18 +6,19 @@
 //------------------------------------------------------------
 
 using System;
+using GameFramework;
 using UnityEngine;
 
 namespace KSG
 {
     [Serializable]
-    public abstract class EntityData
+    public abstract class EntityData : IReference
     {
         [SerializeField]
-        private int m_Id = 0;
+        private int m_Id;
 
         [SerializeField]
-        private int m_TypeId = 0;
+        private int m_TypeId;
 
         [SerializeField]
         private Vector3 m_Position = Vector3.zero;
@@ -25,10 +26,8 @@ namespace KSG
         [SerializeField]
         private Quaternion m_Rotation = Quaternion.identity;
 
-        public EntityData(int entityId, int typeId)
+        public EntityData()
         {
-            m_Id = entityId;
-            m_TypeId = typeId;
         }
 
         /// <summary>
@@ -40,6 +39,10 @@ namespace KSG
             {
                 return m_Id;
             }
+            set
+            {
+                m_Id = value;
+            }
         }
 
         /// <summary>
@@ -50,6 +53,10 @@ namespace KSG
             get
             {
                 return m_TypeId;
+            }
+            set
+            {
+                m_TypeId = value;
             }
         }
 
@@ -81,6 +88,14 @@ namespace KSG
             {
                 m_Rotation = value;
             }
+        }
+
+        public virtual void Clear()
+        {
+            m_Id = 0;
+            m_TypeId = 0;
+            m_Position = Vector3.zero;
+            m_Rotation = Quaternion.identity;
         }
     }
 }

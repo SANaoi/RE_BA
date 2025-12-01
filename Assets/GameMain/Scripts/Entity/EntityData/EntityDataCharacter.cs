@@ -1,30 +1,13 @@
+using GameFramework;
 using UnityEngine;
 
 namespace KSG
 {
-	public class EntityDataCharacter : EntityData
-	{
-		[SerializeField]
-        private int m_OwnerId = 0;
+    public abstract class EntityDataCharacter : EntityData
+    {
 
         [SerializeField]
         private CampType m_OwnerCamp = CampType.Unknown;
-
-		public EntityDataCharacter(int entityId, int typeId, CampType ownerCamp) : base(entityId, typeId)
-		{
-            m_OwnerCamp = ownerCamp;
-		}
-
-        /// <summary>
-        /// 拥有者编号。
-        /// </summary>
-        public int OwnerId
-        {
-            get
-            {
-                return m_OwnerId;
-            }
-        }
 
         /// <summary>
         /// 拥有者阵营。
@@ -35,6 +18,10 @@ namespace KSG
             {
                 return m_OwnerCamp;
             }
+            set
+            {
+                m_OwnerCamp = value;
+            }
         }
-	}
+    }
 }

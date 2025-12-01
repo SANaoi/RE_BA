@@ -123,6 +123,7 @@
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerAimState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Event\PlayerCrosshairChangeEventArgs.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\EnitityTargetable.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataProjectile.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLaunch.cs" />

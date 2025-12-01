@@ -21,7 +21,6 @@ namespace KSG
         public void OnEnter()
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
-
             GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create
             (
                 typeof(PlayerLogic),
@@ -29,7 +28,7 @@ namespace KSG
                 "Player", 
                 Constant.AssetPriority.PlayerAsset,
                 (entity) => {GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm); },
-                new EntityDataPlayer(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Momoi_Original)
+                EntityDataPlayer.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Momoi_Original)
             ));
         }
 
@@ -99,7 +98,7 @@ namespace KSG
                 return;
             }
 
-            Action<Entity> callback = null;
+            Action<Entity> callback;
             if (!m_dicCallback.TryGetValue(ne.Entity.Id, out callback))
             {
                 return;

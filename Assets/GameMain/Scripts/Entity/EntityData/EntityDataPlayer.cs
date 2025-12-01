@@ -1,3 +1,4 @@
+using GameFramework;
 using GameFramework.DataTable;
 using UnityEngine;
 
@@ -11,22 +12,40 @@ namespace KSG
         private float m_Speed = 0;
         [SerializeField]
         private int m_CameraId = 0;
-        public EntityDataPlayer(int entityId, int typeId)
-            : base(entityId, typeId, CampType.Player)
+        public EntityDataPlayer()
         {
-            IDataTable<DRPlayer> dtPlayer = GameEntry.DataTable.GetDataTable<DRPlayer>();
-            DRPlayer drPlayer = dtPlayer.GetDataRow(TypeId);
-            if (drPlayer == null)
-            {
-                return;
-            }
-
-            m_MaxHP = drPlayer.HP;
-            m_Speed = drPlayer.Speed;
-            m_CameraId = drPlayer.CameraId0;
-
+            OwnerCamp = CampType.Unknown;
+            m_MaxHP = 0;
+            m_Speed = 0;
+            m_CameraId = 0;
         }
 
+
+        public static EntityDataPlayer Create(int entityId, int typeId, CampType ownerCamp = CampType.Unknown)
+        {
+            EntityDataPlayer data = ReferencePool.Acquire<EntityDataPlayer>();
+            data.Id = entityId;
+            data.TypeId = typeId;
+            IDataTable<DRPlayer> dt = GameEntry.DataTable.GetDataTable<DRPlayer>();
+            DRPlayer row = dt.GetDataRow(typeId);
+            if (row != null)
+            {
+                data.m_MaxHP = row.HP;
+                data.m_Speed = row.Speed;
+                data.m_CameraId = row.CameraId0;
+            }
+            data.OwnerCamp = ownerCamp;
+            return data;
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+            OwnerCamp = CampType.Unknown;
+            m_MaxHP = 0;
+            m_Speed = 0;
+            m_CameraId = 0;
+        }
         /// <summary>
         /// 最大生命。
         /// </summary>
