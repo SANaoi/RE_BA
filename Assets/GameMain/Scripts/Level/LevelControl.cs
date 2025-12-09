@@ -75,7 +75,7 @@ namespace KSG
             EntityData entityData
         )
         {
-            // serialId = entityData.Id;
+            // serialId == entityData.Id;
             m_dicCallback.Add(entityData.Id, showSuccess);
             EntityExtension.ShowEntity
             (

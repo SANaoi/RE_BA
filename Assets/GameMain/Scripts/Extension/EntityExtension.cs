@@ -60,7 +60,15 @@ namespace KSG
             entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName, entityfolder), entityGroup, priority, data);
         
         }
-
+        /// <summary>
+        /// 显示实体
+        /// </summary>
+        /// <param name="entityComponent"></param>
+        /// <param name="logicType">实体逻辑类</param>
+        /// <param name="entityGroup">实体所属组</param>
+        /// <param name="entityfolder">实体所在文件夹</param>
+        /// <param name="priority">实体加载优先级</param>
+        /// <param name="data">创建实体绑定的Data</param>
         public static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, string entityfolder, int priority, EntityData data)
         {
             if (data == null)

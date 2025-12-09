@@ -1,16 +1,97 @@
 using GameFramework;
+using GameFramework.DataTable;
+using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace KSG
 {
     public class EntityDataProjectile : EntityData
     {
+        [SerializeField]
+        private int m_OwnerId = 0;
+
+        [SerializeField]
+        private CampType m_OwnerCamp = CampType.Unknown;
+
+        [SerializeField]
+        private float m_Damage = 0f;
+
+        [SerializeField]
+        private float m_Speed = 0f;
+
+        [SerializeField]
+        private float m_SplashDamage = 0f;
+
+        [SerializeField]
+        private float m_SplashRange = 0f;
+        public static EntityDataProjectile Create(int entityId, int typeId, int ownerId, CampType ownerCamp)
+        {
+            EntityDataProjectile data = ReferencePool.Acquire<EntityDataProjectile>();
+            data.Id = entityId;
+            data.TypeId = typeId;
+            data.m_OwnerId = ownerId;
+            data.m_OwnerCamp = ownerCamp;
+            
+            IDataTable<DRProjectile> dt = GameEntry.DataTable.GetDataTable<DRProjectile>();
+            DRProjectile row = dt.GetDataRow(typeId);
+            if (row != null)
+            {
+                data.m_Damage = row.Damage;
+                data.m_Speed = row.Speed;
+                data.m_SplashDamage = row.SplashDamage;
+                data.m_SplashRange = row.SplashRange;
+            }
+            else
+            {
+                Log.Warning("Can not find projectile id '{0}'.", typeId);
+            }
+
+            return data;
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+            m_OwnerId = 0;
+            m_OwnerCamp = CampType.Unknown;
+            m_Damage = 0f;
+            m_Speed = 0f;
+            m_SplashDamage = 0f;
+            m_SplashRange = 0f;
+
+
+        }
+        /// <summary>
+        /// 获取拥有者实体编号。
+        /// </summary>
+        public int OwnerId
+        {
+            get
+            {
+                return m_OwnerId;
+            }
+        }
+
+        /// <summary>
+        /// 获取拥有者阵营。
+        /// </summary>
+        public CampType OwnerCamp
+        {
+            get
+            {
+                return m_OwnerCamp;
+            }
+        }
+
         /// <summary>
         /// 获取伤害。
         /// </summary>
         public float Damage
         {
-            get;
-            private set;
+            get
+            {
+                return m_Damage;
+            }
         }
 
         /// <summary>
@@ -18,8 +99,10 @@ namespace KSG
         /// </summary>
         public float Speed
         {
-            get;
-            private set;
+            get
+            {
+                return m_Speed;
+            }
         }
 
         /// <summary>
@@ -27,8 +110,10 @@ namespace KSG
         /// </summary>
         public float SplashDamage
         {
-            get;
-            private set;
+            get
+            {
+                return m_SplashDamage;
+            }
         }
 
         /// <summary>
@@ -36,8 +121,10 @@ namespace KSG
         /// </summary>
         public float SplashRange
         {
-            get;
-            private set;
+            get
+            {
+                return m_SplashRange;
+            }
         }
     }
 }

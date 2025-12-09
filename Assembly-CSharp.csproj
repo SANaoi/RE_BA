@@ -65,6 +65,7 @@
     <Analyzer Include="D:\UnityEditor\6000.0.29f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Projectile\ProjectileLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\EntityBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Sound\SoundExtension.cs" />
@@ -85,8 +86,11 @@
     <Compile Include="Assets\GameMain\Scripts\DataTable\DREntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumUIForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRPlayer.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\AttackerData.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerMoveState.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.Setting.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Launcher.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\ILauncher.cs" />
     <Compile Include="Assets\GameMain\Test\TimelineTest\DialogueTimelineController.cs" />
     <Compile Include="Assets\GameMain\Test\MultiImageController.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.AssetPriority.cs" />
@@ -126,6 +130,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataProjectile.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\CommonLauncher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLaunch.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\DialogForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\CommonButton.cs" />
