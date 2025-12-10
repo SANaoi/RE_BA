@@ -4,6 +4,7 @@ namespace KSG
 {
     public abstract class Launcher : MonoBehaviour, ILauncher
     {
+        public Transform firingPoint;
         public virtual void Launch(EntityDataProjectile projectileData, Vector3 origin, Transform firingPoint)
         {
             

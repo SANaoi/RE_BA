@@ -23,7 +23,8 @@ namespace KSG
             "Entity",
             "Scene",
             "UIForm",
-            "Camera"
+            "Camera",
+            "Projectile"
         };
                 private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();
 

@@ -24,13 +24,27 @@ namespace KSG
 
         [SerializeField]
         private float m_SplashRange = 0f;
-        public static EntityDataProjectile Create(int entityId, int typeId, int ownerId, CampType ownerCamp)
+        [SerializeField]
+        private Vector3 m_Origin = Vector3.zero;
+        [SerializeField]
+        private Transform m_FiringPoint = null;
+        public static EntityDataProjectile Create
+        (
+            int entityId, 
+            int typeId, 
+            int ownerId, 
+            CampType ownerCamp,
+            Vector3 origin, 
+            Transform firingPoint
+            )
         {
             EntityDataProjectile data = ReferencePool.Acquire<EntityDataProjectile>();
             data.Id = entityId;
             data.TypeId = typeId;
             data.m_OwnerId = ownerId;
             data.m_OwnerCamp = ownerCamp;
+            data.m_Origin = origin;
+            data.m_FiringPoint = firingPoint;
             
             IDataTable<DRProjectile> dt = GameEntry.DataTable.GetDataTable<DRProjectile>();
             DRProjectile row = dt.GetDataRow(typeId);
@@ -45,7 +59,6 @@ namespace KSG
             {
                 Log.Warning("Can not find projectile id '{0}'.", typeId);
             }
-
             return data;
         }
 
@@ -124,6 +137,28 @@ namespace KSG
             get
             {
                 return m_SplashRange;
+            }
+        }
+        public Vector3 Origin
+        {
+            get
+            {
+                return m_Origin;
+            }
+            set
+            {
+                m_Origin = value;
+            }
+        }
+        public Transform FiringPoint
+        {
+            get
+            {
+                return m_FiringPoint;
+            }
+            set
+            {
+                m_FiringPoint = value;
             }
         }
     }

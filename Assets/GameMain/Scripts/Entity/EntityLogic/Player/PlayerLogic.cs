@@ -24,10 +24,11 @@ namespace KSG
 		[Header("默认挂载")]
 		public Rigidbody rb;
 		protected Animator animator;
-		protected Transform CameraParent;
+		public Launcher playerLauncher;
+		protected Transform cameraParent;
 		protected CharacterController characterController;
-		public MultiParentConstraint WeaponRigging;
-		public MultiAimConstraint AimRigging;
+		public MultiParentConstraint weaponRigging;
+		public MultiAimConstraint aimRigging;
 
 		[Header("运行数据")]
 		public bool isAimOrShootState = false;
@@ -43,7 +44,7 @@ namespace KSG
 		protected PlayerInputAction.PlayerActions PlayerActions;
 		public EntityDataCamera cameraData;
 		public CameraLogic cameraEntityLogic;
-
+		public AttackerData attackerData;
 		protected IFsm<PlayerLogic> MoveFsmManager;
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
@@ -66,6 +67,12 @@ namespace KSG
 
 			m_Camera = Camera.main;
 			playerData = userData as EntityDataPlayer;
+			attackerData = AttackerData.Create(
+				playerData.Id,
+				playerData.OwnerCamp,
+				playerData.ProjectileEntityId,
+				playerData.ProjectileType
+			);
 
 			playerAnimationName = new PlayerAnimationName();
 			playerAnimationName.InitializeData();
@@ -77,8 +84,9 @@ namespace KSG
 
 			rb = GetComponentInChildren<Rigidbody>();
 			animator = GetComponentInChildren<Animator>();
-			AimRigging = GetComponentInChildren<MultiAimConstraint>();
-			WeaponRigging = GetComponentInChildren<MultiParentConstraint>();
+			playerLauncher = GetComponentInChildren<Launcher>();
+			aimRigging = GetComponentInChildren<MultiAimConstraint>();
+			weaponRigging = GetComponentInChildren<MultiParentConstraint>();
 			characterController = GetComponentInChildren<CharacterController>();
 		}
 
@@ -137,7 +145,7 @@ namespace KSG
 		}
 		private void ShowVirtualCamera()
 		{
-			CameraParent = GameObject.Find("CameraRoot").transform;
+			cameraParent = GameObject.Find("CameraRoot").transform;
 			cameraData = EntityDataCamera.Create(GameEntry.Entity.GenerateSerialId(), (int)playerData.CameraId);
 			GameEntry.Event.Fire
 			(
@@ -158,23 +166,23 @@ namespace KSG
 		private void OnShowVirtualCameraSuccess(Entity entity)
 		{
 			cameraEntityLogic = entity.Logic as CameraLogic;
-			cameraEntityLogic.SetTarget(CameraParent);
+			cameraEntityLogic.SetTarget(cameraParent);
 		}
 
 		private void SetRigWeight()
 		{
-			if (AimRigging.weight != targetAimRiggingWeight)
+			if (aimRigging.weight != targetAimRiggingWeight)
 			{
-				AimRigging.weight = Mathf.Lerp(AimRigging.weight, targetAimRiggingWeight, 4 * Time.deltaTime);
-				AimRigging.weight = AimRigging.weight >= 0.01f ? AimRigging.weight : 0f;
-				AimRigging.weight = AimRigging.weight <= 0.99f ? AimRigging.weight : 1f;
+				aimRigging.weight = Mathf.Lerp(aimRigging.weight, targetAimRiggingWeight, 4 * Time.deltaTime);
+				aimRigging.weight = aimRigging.weight >= 0.01f ? aimRigging.weight : 0f;
+				aimRigging.weight = aimRigging.weight <= 0.99f ? aimRigging.weight : 1f;
 
 			}
-			if (WeaponRigging.weight != targetWeaponRiggingWeight)
+			if (weaponRigging.weight != targetWeaponRiggingWeight)
 			{
-				WeaponRigging.weight = Mathf.Lerp(WeaponRigging.weight, targetWeaponRiggingWeight, 4 * Time.deltaTime);
-				WeaponRigging.weight = WeaponRigging.weight >= 0.01f ? WeaponRigging.weight : 0f;
-				WeaponRigging.weight = WeaponRigging.weight <= 0.99f ? WeaponRigging.weight : 1f;
+				weaponRigging.weight = Mathf.Lerp(weaponRigging.weight, targetWeaponRiggingWeight, 4 * Time.deltaTime);
+				weaponRigging.weight = weaponRigging.weight >= 0.01f ? weaponRigging.weight : 0f;
+				weaponRigging.weight = weaponRigging.weight <= 0.99f ? weaponRigging.weight : 1f;
 
 			}
 		}

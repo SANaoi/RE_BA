@@ -14,22 +14,6 @@ namespace KSG
             get;
             private set;
         }
-        public float Spread
-        {
-            get;
-            private set;
-        }
-
-        public float FireRate
-        {
-            get;
-            private set;
-        }
-        public bool IsMultiAttack
-        {
-            get;
-            private set;
-        }
         public int ProjectileEntityId
         {
             get;
@@ -44,9 +28,6 @@ namespace KSG
 
         public AttackerData()
         {
-            this.Spread = 0;
-            this.FireRate = 0;
-            this.IsMultiAttack = false;
             this.ProjectileType = null;
             this.ProjectileEntityId = -1;
             this.AttackerId = -1;
@@ -54,18 +35,12 @@ namespace KSG
         }
         public static AttackerData Create
         (
-            float spread, 
-            float fireRate, 
-            bool isMultiAttack, 
-            int projectileEntityId, 
-            string projectileType, 
             int attackerId, 
-            CampType campType)
+            CampType campType,
+            int projectileEntityId, 
+            string projectileType)
         {
             AttackerData attackerData = ReferencePool.Acquire<AttackerData>();
-            attackerData.Spread = spread;
-            attackerData.FireRate = fireRate;
-            attackerData.IsMultiAttack = isMultiAttack;
             attackerData.AttackerId = attackerId;
             attackerData.CampType = campType;
             attackerData.ProjectileEntityId = projectileEntityId;
@@ -75,9 +50,6 @@ namespace KSG
         }
         public void Clear()
         {
-            this.Spread = 0f;
-            this.FireRate = 0f;
-            this.IsMultiAttack = false;
             this.ProjectileEntityId = -1;
             this.ProjectileType = null;
         }

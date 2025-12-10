@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-11-29 02:30:48.915
+// 生成时间：2025-12-10 18:45:17.185
 //------------------------------------------------------------
 
 using GameFramework;
@@ -63,6 +63,24 @@ namespace KSG
             private set;
         }
 
+        /// <summary>
+        /// 获取子弹编号。
+        /// </summary>
+        public int ProjectileEntityId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取子弹类型。
+        /// </summary>
+        public string ProjectileType
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -78,6 +96,8 @@ namespace KSG
             HP = float.Parse(columnStrings[index++]);
             Speed = float.Parse(columnStrings[index++]);
             CameraId0 = int.Parse(columnStrings[index++]);
+            ProjectileEntityId = int.Parse(columnStrings[index++]);
+            ProjectileType = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -93,6 +113,8 @@ namespace KSG
                     HP = binaryReader.ReadSingle();
                     Speed = binaryReader.ReadSingle();
                     CameraId0 = binaryReader.Read7BitEncodedInt32();
+                    ProjectileEntityId = binaryReader.Read7BitEncodedInt32();
+                    ProjectileType = binaryReader.ReadString();
                 }
             }
 

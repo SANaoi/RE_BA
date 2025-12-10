@@ -70,6 +70,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Sound\SoundExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRUIForm.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Utility\TypeUtility.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UGuiForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedurePreload.cs" />
     <Compile Include="Assets\GameMain\Scripts\Extension\EventSubscriber.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Assets\GameMain\Scripts\UI\UpdateResourceForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumEntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRScene.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Projectile\ProjectileLogicRifle.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.DashData.cs" />
     <Compile Include="Assets\GameMain\Scripts\Extension\EntityExtension.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataPlayer.cs" />

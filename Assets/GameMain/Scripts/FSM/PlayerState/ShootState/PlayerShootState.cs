@@ -9,6 +9,8 @@ namespace KSG
     public class PlayerShootState : FsmState<PlayerLogic>, IReference
     {
         private PlayerLogic owner;
+        private float shootDalyTime = 0.2f;
+        private float shootTimer = 0f;
 
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
@@ -23,6 +25,8 @@ namespace KSG
             
             owner.targetAimRiggingWeight = 1f;
             owner.targetWeaponRiggingWeight = 1f;
+
+            shootTimer = shootDalyTime; //进入状态时立即开火
         }
 
         protected override void OnUpdate(ProcedureOwner fsm, float elapseSeconds, float realElapseSeconds)
@@ -36,13 +40,19 @@ namespace KSG
             {
                 ChangeState<PlayerAimState>(fsm);
             }
+            shootTimer += elapseSeconds;
+            if (shootTimer >= shootDalyTime)
+            {
+                Shoot();
+                shootTimer = 0f;
+            }
+
         }
 
         protected override void OnLeave(ProcedureOwner fsm, bool isShutdown)
         {
             base.OnLeave(fsm, isShutdown);
             owner.StopAnimation(owner.playerAnimationName.isShootParameterName);
-
         }
 
         protected override void OnDestroy(ProcedureOwner fsm)
@@ -60,6 +70,11 @@ namespace KSG
         public void Clear()
         {
             owner = null;
+        }
+
+        private void Shoot()
+        {
+            owner.playerLauncher.Launch(owner.attackerData, owner.playerLauncher.firingPoint.position, owner.playerLauncher.firingPoint);
         }
     }
 }

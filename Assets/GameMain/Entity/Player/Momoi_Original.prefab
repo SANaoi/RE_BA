@@ -933,7 +933,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1793812970155694344}
   m_Layer: 0
-  m_Name: fire_01
+  m_Name: firingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4712,6 +4712,7 @@ GameObject:
   - component: {fileID: 4616634670646056732}
   - component: {fileID: 5245902508231045121}
   - component: {fileID: 4974835288417087836}
+  - component: {fileID: 4251370928502345191}
   m_Layer: 0
   m_Name: Momoi_Original
   m_TagString: Untagged
@@ -4827,6 +4828,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4251370928502345191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7664120165268043707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a5e0b9ee2f09a4081a11c4a23fe896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firingPoint: {fileID: 1793812970155694344}
 --- !u!1 &7726302820741675386
 GameObject:
   m_ObjectHideFlags: 0

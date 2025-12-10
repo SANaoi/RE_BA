@@ -1,6 +1,7 @@
 using GameFramework;
 using GameFramework.DataTable;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace KSG
 {
@@ -12,6 +13,10 @@ namespace KSG
         private float m_Speed = 0;
         [SerializeField]
         private int m_CameraId = 0;
+        [SerializeField]
+        private int m_ProjectileEntityId = 0;
+        [SerializeField]
+        private string m_ProjectileType = "";
         public EntityDataPlayer()
         {
             OwnerCamp = CampType.Unknown;
@@ -33,6 +38,12 @@ namespace KSG
                 data.m_MaxHP = row.HP;
                 data.m_Speed = row.Speed;
                 data.m_CameraId = row.CameraId0;
+                data.m_ProjectileEntityId = row.ProjectileEntityId;
+                data.m_ProjectileType = row.ProjectileType;
+            }
+            else
+            {
+                Log.Warning("Can not find Player id '{0}'.", typeId);
             }
             data.OwnerCamp = ownerCamp;
             return data;
@@ -75,6 +86,20 @@ namespace KSG
             get
             {
                 return m_CameraId;
+            }
+        }
+        public int ProjectileEntityId
+        {
+            get
+            {
+                return m_ProjectileEntityId;
+            }
+        }
+        public string ProjectileType
+        {
+            get
+            {
+                return m_ProjectileType;
             }
         }
     }
