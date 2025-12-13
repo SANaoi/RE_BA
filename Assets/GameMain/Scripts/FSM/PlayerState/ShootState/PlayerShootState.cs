@@ -74,6 +74,11 @@ namespace KSG
 
         private void Shoot()
         {
+            if (owner.playerLauncher.firingPoint == null)
+            {
+                Log.Error("PlayerLauncher FiringPoint is null.");
+                return;
+            }
             owner.playerLauncher.Launch(owner.attackerData, owner.playerLauncher.firingPoint.position, owner.playerLauncher.firingPoint);
         }
     }

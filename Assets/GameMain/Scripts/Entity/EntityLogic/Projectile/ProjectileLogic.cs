@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace KSG
@@ -5,6 +7,12 @@ namespace KSG
     public abstract class ProjectileLogic : EntityBase
     {
         protected EntityDataProjectile projectileData;
+        protected const int TargetLayerMask = 1 << 8;
+        private float speed;
+        private float distanceTraveled = 0f;
+        protected float lifeTime = 3f;
+        protected float elapsedTime = 0f;
+        protected Vector3 launchDirection;
         // TODO :
         // attackerData.Spread = spread;
         // attackerData.FireRate = fireRate;
@@ -13,12 +21,11 @@ namespace KSG
         {
             base.OnInit(userData);
         }
-        
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
-            
-            // 1. 每次显示时，重新获取数据（因为复用时 userData 会变）
+
             projectileData = userData as EntityDataProjectile;
 
             if (projectileData == null)
@@ -27,19 +34,41 @@ namespace KSG
                 return;
             }
 
-            // 2. 在 OnShow 中设置位置，确保每次复用都生效
-            if (projectileData.FiringPoint != null)
+            // 在 OnShow 中设置位置，确保每次复用都生效
+            CachedTransform.position = projectileData.Position;
+            CachedTransform.rotation = projectileData.Rotation;
+            speed = projectileData.Speed;
+            launchDirection = CachedTransform.forward;
+            //TODO : SpawnCollisionParticles
+        }
+
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+            distanceTraveled += speed * elapseSeconds;
+            CheckHit(distanceTraveled);
+            CachedTransform.position += launchDirection * distanceTraveled;
+            
+            elapsedTime += elapseSeconds;
+
+            if (elapsedTime >= lifeTime)
             {
-                CachedTransform.position = projectileData.FiringPoint.position;
-                CachedTransform.rotation = projectileData.FiringPoint.rotation; // 通常也需要设置旋转
-            }
-            else
-            {
-                // 如果没有Transform引用，使用数据中的坐标字段（推荐做法）
-                CachedTransform.position = projectileData.Origin;
+                elapsedTime = 0f;
+                GameEntry.Entity.HideEntity(this);
             }
         }
 
-        //TODO : SpawnCollisionParticles
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            base.OnHide(isShutdown, userData);
+            projectileData = null;
+            elapsedTime = 0f;
+            distanceTraveled = 0f;
+        }
+
+        protected virtual void CheckHit(float distanceTraveled) { }
+
+        protected virtual void OnHit(Vector3 hitPoint, Collider directHitCollider){ }
     }
 }

@@ -26,8 +26,6 @@ namespace KSG
         private float m_SplashRange = 0f;
         [SerializeField]
         private Vector3 m_Origin = Vector3.zero;
-        [SerializeField]
-        private Transform m_FiringPoint = null;
         public static EntityDataProjectile Create
         (
             int entityId, 
@@ -44,7 +42,8 @@ namespace KSG
             data.m_OwnerId = ownerId;
             data.m_OwnerCamp = ownerCamp;
             data.m_Origin = origin;
-            data.m_FiringPoint = firingPoint;
+            data.Position = firingPoint.transform.position;
+            data.Rotation = firingPoint.transform.rotation;
             
             IDataTable<DRProjectile> dt = GameEntry.DataTable.GetDataTable<DRProjectile>();
             DRProjectile row = dt.GetDataRow(typeId);
@@ -71,8 +70,6 @@ namespace KSG
             m_Speed = 0f;
             m_SplashDamage = 0f;
             m_SplashRange = 0f;
-
-
         }
         /// <summary>
         /// 获取拥有者实体编号。
@@ -148,17 +145,6 @@ namespace KSG
             set
             {
                 m_Origin = value;
-            }
-        }
-        public Transform FiringPoint
-        {
-            get
-            {
-                return m_FiringPoint;
-            }
-            set
-            {
-                m_FiringPoint = value;
             }
         }
     }
