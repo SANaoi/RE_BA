@@ -11,6 +11,7 @@ namespace KSG
             public const float WALKINGSPREAD = 40f;
             public const float RUNNINGSPREAD = 60f;
             public const float SHOOTINGSPREAD = 40f;
+            public const int TargetLayerMask = 1 << 8;
         }
     }
 }

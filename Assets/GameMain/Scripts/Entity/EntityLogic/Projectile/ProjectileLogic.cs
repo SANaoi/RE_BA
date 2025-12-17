@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -38,8 +37,8 @@ namespace KSG
             CachedTransform.position = projectileData.Position;
             CachedTransform.rotation = projectileData.Rotation;
             speed = projectileData.Speed;
-            launchDirection = CachedTransform.forward;
-            //TODO : SpawnCollisionParticles
+            GetLaunchDirectionToSceneCenter();
+
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -49,7 +48,7 @@ namespace KSG
             distanceTraveled += speed * elapseSeconds;
             CheckHit(distanceTraveled);
             CachedTransform.position += launchDirection * distanceTraveled;
-            
+
             elapsedTime += elapseSeconds;
 
             if (elapsedTime >= lifeTime)
@@ -69,6 +68,28 @@ namespace KSG
 
         protected virtual void CheckHit(float distanceTraveled) { }
 
-        protected virtual void OnHit(Vector3 hitPoint, Collider directHitCollider){ }
+        protected virtual void OnHit(Vector3 hitPoint, Collider directHitCollider) { }
+        private Vector3 GetLaunchDirectionToSceneCenter()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(
+            new Vector3(Screen.width / 2f, Screen.height / 2f));
+
+            Vector3 targetPoint;
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+            {
+                targetPoint = hit.point;
+            }
+            else
+            {
+                targetPoint = ray.origin + ray.direction * 100f;
+            }
+            launchDirection = (targetPoint - CachedTransform.position).normalized;
+            return launchDirection;
+        }
+        private void SpawnCollisionParticles(Vector3 hitPoint)
+        {
+            //TODO : 播放粒子特效
+        }
+
     }
 }

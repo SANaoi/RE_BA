@@ -7,7 +7,7 @@ namespace KSG
     {
         protected override void CheckHit(float distance)
         {
-            if (Physics.Raycast(CachedTransform.position, launchDirection, out RaycastHit hit, distance, TargetLayerMask))
+            if (Physics.Raycast(CachedTransform.position, launchDirection, out RaycastHit hit, distance, PlayerConstantData.CrosshairData.TargetLayerMask))
             {
                 CachedTransform.position = hit.point;
                 OnHit(hit.point, hit.collider);
@@ -25,12 +25,10 @@ namespace KSG
                 {
                     // 调用 EnitityTargetable 中定义的 TakeDamage
                     target.TakeDamage(projectileData.Damage);
-                    Log.Info("击中目标 {0}，造成伤害 {1}", target.Name, projectileData.Damage);
                 }
                 else
                 {
                     // 击中墙壁或其他物体
-                    Log.Info("击中无效目标: " + directHitCollider.name);
                 }
                 GameEntry.Entity.HideEntity(this);
             }
