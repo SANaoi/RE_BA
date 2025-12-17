@@ -6,6 +6,7 @@ namespace KSG
     public abstract class ProjectileLogic : EntityBase
     {
         protected EntityDataProjectile projectileData;
+        protected TrailRenderer trailRenderer;
         protected const int TargetLayerMask = 1 << 8;
         private float speed;
         private float distanceTraveled = 0f;
@@ -26,7 +27,9 @@ namespace KSG
             base.OnShow(userData);
 
             projectileData = userData as EntityDataProjectile;
-
+            trailRenderer = GetComponent<TrailRenderer>();
+            trailRenderer.Clear();
+            
             if (projectileData == null)
             {
                 Log.Error("Entity EntityProjectile '{0}' entity data invalid.", Id);
