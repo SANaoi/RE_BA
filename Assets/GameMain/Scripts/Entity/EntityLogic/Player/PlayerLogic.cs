@@ -409,10 +409,6 @@ namespace KSG
 
 			animator.SetBool(animationHash, false);
 		}
-		public Coroutine StartDashCoroutine(IEnumerator routine)
-		{
-			return StartCoroutine(routine);
-		}
 		#endregion
 	}
 }

@@ -89,7 +89,38 @@ namespace KSG
 
             return entityData.Id;
         }
+        public void HideEntity(int serialId)
+        {
+            Entity entity = null;
+            if (!m_dicSerialEntity.TryGetValue(serialId, out entity))
+            {
+                Log.Error("Can find entity('serial id:{0}') ", serialId);
+            }
+            m_dicSerialEntity.Remove(serialId);
+            m_dicCallback.Remove(serialId);
+            Entity[] entities = GameEntry.Entity.GetChildEntities(entity);
+            if (entities != null)
+            {
+                foreach (var item in entities)
+                {
+                    //若Child Entity由这个Loader对象托管，则由此Loader释放
+                    if (m_dicSerialEntity.ContainsKey(item.Id))
+                    {
+                        HideEntity(item);
+                    }
+                    else//若Child Entity不由这个Loader对象托管，则从Parent Entity脱离
+                        GameEntry.Entity.DetachEntity(item);
+                }
+            }
+            GameEntry.Entity.HideEntity(entity);
+        }
+        public void HideEntity(Entity entity)
+        {
+            if (entity == null)
+                return;
 
+            HideEntity(entity.Id);
+        }
         private void OnShowEntitySuccess(object sender, GameEventArgs e)
         {
             ShowEntitySuccessEventArgs ne = (ShowEntitySuccessEventArgs)e;

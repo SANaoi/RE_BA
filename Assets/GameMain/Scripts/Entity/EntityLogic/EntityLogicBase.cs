@@ -6,7 +6,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public abstract class EntityBase : EntityLogic, IPause
+    public abstract class EntityLogicBase : EntityLogic, IPause
     {
         [SerializeField]
         private EntityData m_entityData = null;
@@ -113,12 +113,12 @@ namespace KSG
                 m_eventSubscriber.UnSubscribeAll();
         }
 
-        public void Pause()
+        public virtual void Pause()
         {
             pause = true;
         }
 
-        public void Resume()
+        public virtual void Resume()
         {
             pause = false;
         }

@@ -12,7 +12,7 @@ using UnityEngine;
 namespace KSG
 {
     [Serializable]
-    public abstract class EntityData : IReference
+    public class EntityData : IReference
     {
         [SerializeField]
         private int m_Id;
@@ -26,8 +26,17 @@ namespace KSG
         [SerializeField]
         private Quaternion m_Rotation = Quaternion.identity;
 
+        public object UserData
+        {
+            get;
+            protected set;
+        }
+
         public EntityData()
         {
+            m_Position = Vector3.zero;
+            m_Rotation = Quaternion.identity;
+            UserData = null;
         }
 
         /// <summary>
@@ -89,13 +98,24 @@ namespace KSG
                 m_Rotation = value;
             }
         }
-
+        
+        public static EntityData Create(int entityId, int typeId, Vector3 pos, Quaternion rotation, object userData = null)
+        {
+            EntityData entityData = ReferencePool.Acquire<EntityData>();
+            entityData.Id = entityId;
+            entityData.TypeId = typeId;
+            entityData.Position = pos;
+            entityData.Rotation = rotation;
+            entityData.UserData = userData;
+            return entityData;
+        }
         public virtual void Clear()
         {
             m_Id = 0;
             m_TypeId = 0;
             m_Position = Vector3.zero;
             m_Rotation = Quaternion.identity;
+            UserData = null;
         }
     }
 }

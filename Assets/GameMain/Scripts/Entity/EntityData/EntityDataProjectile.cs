@@ -26,6 +26,8 @@ namespace KSG
         private float m_SplashRange = 0f;
         [SerializeField]
         private Vector3 m_Origin = Vector3.zero;
+        [SerializeField]
+        private int m_HitEffectId = 0;
         public static EntityDataProjectile Create
         (
             int entityId, 
@@ -51,6 +53,7 @@ namespace KSG
             {
                 data.m_Damage = row.Damage;
                 data.m_Speed = row.Speed;
+                data.m_HitEffectId = row.HitEffectId;
                 data.m_SplashDamage = row.SplashDamage;
                 data.m_SplashRange = row.SplashRange;
             }
@@ -145,6 +148,17 @@ namespace KSG
             set
             {
                 m_Origin = value;
+            }
+        }
+        public int HitEffectId
+        {
+            get
+            {
+                return m_HitEffectId;
+            }
+            set
+            {
+                m_HitEffectId = value;
             }
         }
     }

@@ -2,7 +2,7 @@ using System;
 
 namespace KSG
 {
-    public abstract class EnitityTargetable : EntityBase
+    public abstract class EnitityTargetable : EntityLogicBase
     {
         protected float hp;
         public float HP

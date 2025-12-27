@@ -4,7 +4,7 @@ using UnityGameFramework.Runtime;
 
 namespace KSG
 {
-    public class CameraLogic : EntityBase
+    public class CameraLogic : EntityLogicBase
     {
         public Transform target;
 

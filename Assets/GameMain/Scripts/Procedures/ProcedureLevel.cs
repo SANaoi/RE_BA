@@ -27,7 +27,7 @@ namespace KSG
             m_LevelControl = LevelControl.Create();
 
             GameEntry.Event.Subscribe(ShowEntityInLevelEventArgs.EventId, OnShowEntityInLevel);
-            
+            GameEntry.Event.Subscribe(HideEntityInLevelEventArgs.EventId, OnHideEntityInLevel);
             
             this.m_ProcedureOwner = procedureOwner; 
             m_LevelControl.OnEnter();
@@ -37,6 +37,7 @@ namespace KSG
         {
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.Event.Unsubscribe(ShowEntityInLevelEventArgs.EventId, OnShowEntityInLevel);
+            GameEntry.Event.Unsubscribe(HideEntityInLevelEventArgs.EventId, OnHideEntityInLevel);
 
             m_LevelControl.Quick();
             ReferencePool.Release(m_LevelControl);
@@ -52,6 +53,17 @@ namespace KSG
             }
 
             m_LevelControl.ShowEntity(ne.type, ne.entityGroup, ne.entityfolder, ne.priority, ne.ShowSuccess, ne.entityData);
+        }
+
+        private void OnHideEntityInLevel(object sender, GameEventArgs e)
+        {
+            HideEntityInLevelEventArgs ne = (HideEntityInLevelEventArgs) e;
+            if (ne == null)
+            {
+                return;
+            }
+
+            m_LevelControl.HideEntity(ne.EntityId);
         }
     }
 }

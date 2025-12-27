@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2025-12-10 18:45:17.195
+// 生成时间：2025-12-21 11:24:40.393
 //------------------------------------------------------------
 
 using GameFramework;
@@ -72,6 +72,15 @@ namespace KSG
             private set;
         }
 
+        /// <summary>
+        /// 获取特效编号。
+        /// </summary>
+        public int HitEffectId
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -88,6 +97,7 @@ namespace KSG
             Speed = float.Parse(columnStrings[index++]);
             SplashDamage = float.Parse(columnStrings[index++]);
             SplashRange = float.Parse(columnStrings[index++]);
+            HitEffectId = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -104,6 +114,7 @@ namespace KSG
                     Speed = binaryReader.ReadSingle();
                     SplashDamage = binaryReader.ReadSingle();
                     SplashRange = binaryReader.ReadSingle();
+                    HitEffectId = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

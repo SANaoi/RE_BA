@@ -12,7 +12,7 @@ namespace KSG
         // 正值用于和服务器通信的实体（如玩家角色、NPC、怪等，服务器只产生正值）
         // 负值用于本地生成的临时实体（如特效、FakeObject等）
         private static int s_SerialId = 0;
-        public static EntityBase GetGameEntity(this EntityComponent entityComponent, int entityId)
+        public static EntityLogicBase GetGameEntity(this EntityComponent entityComponent, int entityId)
         {
             Entity entity = entityComponent.GetEntity(entityId);
             if (entity == null)
@@ -20,15 +20,15 @@ namespace KSG
                 return null;
             }
 
-            return (EntityBase)entity.Logic;
+            return (EntityLogicBase)entity.Logic;
         }
 
-        public static void HideEntity(this EntityComponent entityComponent, EntityBase entity)
+        public static void HideEntity(this EntityComponent entityComponent, EntityLogicBase entity)
         {
             entityComponent.HideEntity(entity.Entity);
         }
 
-        public static void AttachEntity(this EntityComponent entityComponent, EntityBase entity, int ownerId, string parentTransformPath = null, object userData = null)
+        public static void AttachEntity(this EntityComponent entityComponent, EntityLogicBase entity, int ownerId, string parentTransformPath = null, object userData = null)
         {
             entityComponent.AttachEntity(entity.Entity, ownerId, parentTransformPath, userData);
         }
