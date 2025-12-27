@@ -9,7 +9,7 @@ namespace KSG
     public class PlayerRunState : FsmState<PlayerLogic>, IReference
     {
         private PlayerLogic owner;
-
+        Vector3 dir;
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
             base.OnInit(procedureOwner);
@@ -25,15 +25,32 @@ namespace KSG
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
             if (owner.isAimOrShootState)
             {
-                owner.transform.Translate(new Vector3(owner.playerMoveInput.x, 0, owner.playerMoveInput.y).normalized * (owner.playerData.Speed * (float)0.7) * Time.deltaTime);
-                owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude * (float)0.7);
+                Vector3 camForward = owner.m_Camera.transform.forward;
+                Vector3 camRight = owner.m_Camera.transform.right;
+
+                camForward.y = 0f;
+                camRight.y = 0f;
+
+                camForward.Normalize();
+                camRight.Normalize();
+
+                dir =
+                    camRight * owner.playerMoveInput.x +
+                    camForward * owner.playerMoveInput.y;
+
+                dir *= owner.playerData.Speed * 0.7f;
             }
             else
             {
-                owner.transform.Translate(Vector3.forward * owner.playerData.Speed * Time.deltaTime);
-                owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude);
+                dir = owner.transform.forward * owner.playerData.Speed;
             }
 
+            owner.desiredVelocity = dir;
+
+            owner.PlayAnimation(
+                owner.playerAnimationName.SpeedParameterHash,
+                owner.playerMoveInput.magnitude
+            );
             if (owner.isDashing)
             {
                 ChangeState<PlayerDashState>(procedureOwner);
@@ -53,6 +70,8 @@ namespace KSG
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
+            dir = Vector3.zero;
+
         }
         public static PlayerRunState Create()
         {
@@ -62,6 +81,7 @@ namespace KSG
         public void Clear()
         {
             owner = null;
+            dir = Vector3.zero;
         }
     }
 }

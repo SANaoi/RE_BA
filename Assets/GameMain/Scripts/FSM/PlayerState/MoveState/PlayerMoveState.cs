@@ -9,7 +9,7 @@ namespace KSG
     public class PlayerMoveState : FsmState<PlayerLogic>, IReference
     {
         private PlayerLogic owner;
-
+        Vector3 dir;
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
             base.OnInit(procedureOwner);
@@ -26,13 +26,31 @@ namespace KSG
 
             if (owner.isAimOrShootState)
             {
-                owner.transform.Translate(new Vector3(owner.playerMoveInput.x, 0, owner.playerMoveInput.y) * (owner.playerData.Speed * (float)0.5) * Time.deltaTime);
-                owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude * (float)0.5);}
+                Vector3 camForward = owner.m_Camera.transform.forward;
+                Vector3 camRight = owner.m_Camera.transform.right;
+
+                camForward.y = 0f;
+                camRight.y = 0f;
+
+                camForward.Normalize();
+                camRight.Normalize();
+
+                dir =
+                    camRight * owner.playerMoveInput.x +
+                    camForward * owner.playerMoveInput.y;
+
+                dir *= owner.playerData.Speed * 0.5f;
+            }
             else
             {
-                owner.transform.Translate(Vector3.forward * (owner.playerData.Speed * (float)0.7) * Time.deltaTime);
-                owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, owner.playerMoveInput.magnitude * (float)0.7);
+                dir = owner.transform.forward * (owner.playerData.Speed * 0.7f);
             }
+
+            owner.desiredVelocity = dir;
+            owner.PlayAnimation(
+                owner.playerAnimationName.SpeedParameterHash,
+                owner.playerMoveInput.magnitude / owner.playerData.Speed
+            );
 
             if (owner.isDashing)
             {
@@ -54,6 +72,7 @@ namespace KSG
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
+            dir = Vector3.zero;
         }
         public static PlayerMoveState Create()
         {
@@ -63,6 +82,7 @@ namespace KSG
         public void Clear()
         {
             owner = null;
+            dir = Vector3.zero;
         }
     }
 }

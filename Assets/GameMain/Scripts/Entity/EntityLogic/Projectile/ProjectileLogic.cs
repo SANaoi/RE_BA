@@ -54,7 +54,7 @@ namespace KSG
             if (m_elapsedTime >= m_lifeTime)
             {
                 m_elapsedTime = 0f;
-                GameEntry.Entity.HideEntity(this);
+                GameEntry.Event.Fire(this, HideEntityInLevelEventArgs.Create(Entity.Id));
             }
         }
 
@@ -90,7 +90,6 @@ namespace KSG
         }
         protected void SpawnCollisionParticles(Vector3 pos, Quaternion rotation)
         {
-            //TODO : 播放粒子特效
             if (projectileData.HitEffectId != 0)
             {
                 GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create

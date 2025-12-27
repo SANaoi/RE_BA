@@ -26,7 +26,6 @@ namespace KSG
 		protected Animator animator;
 		public Launcher playerLauncher;
 		protected Transform cameraParent;
-		protected CharacterController characterController;
 		public MultiParentConstraint weaponRigging;
 		public MultiAimConstraint aimRigging;
 
@@ -36,6 +35,8 @@ namespace KSG
 		public float targetAimRiggingWeight;
 		public float lastDashTime = -100f;
 
+		[HideInInspector]
+		public Vector3 desiredVelocity;
 		public EntityDataPlayer playerData;
 		public UnityEngine.Camera m_Camera;
 		public PlayerAnimationName playerAnimationName;
@@ -82,12 +83,11 @@ namespace KSG
 			ShootStateList = new List<FsmState<PlayerLogic>>();
 			PlayerActions = inputActions.Player;
 
-			rb = GetComponentInChildren<Rigidbody>();
+			rb = GetComponent<Rigidbody>();
 			animator = GetComponentInChildren<Animator>();
 			playerLauncher = GetComponentInChildren<Launcher>();
 			aimRigging = GetComponentInChildren<MultiAimConstraint>();
 			weaponRigging = GetComponentInChildren<MultiParentConstraint>();
-			characterController = GetComponentInChildren<CharacterController>();
 		}
 
 		protected override void OnShow(object userData)
@@ -115,7 +115,15 @@ namespace KSG
 			SetRigWeight();
 			SetCrosshairSize();
 		}
+		void FixedUpdate()
+		{
+			if (rb == null) return;
 
+			rb.MovePosition(
+				rb.position + desiredVelocity * Time.fixedDeltaTime
+			);
+		}
+		
 		protected override void OnHide(bool isShutdown, object userData)
 		{
 			base.OnHide(isShutdown, userData);
@@ -268,7 +276,7 @@ namespace KSG
 				// 	targetRotation,
 				// 	100f * Time.deltaTime
 				// );
-				transform.rotation = targetRotation;
+				rb.MoveRotation(targetRotation);
 			}
 		}
 		#endregion

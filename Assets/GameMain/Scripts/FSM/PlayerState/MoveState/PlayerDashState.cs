@@ -10,7 +10,8 @@ namespace KSG
     public class PlayerDashState : FsmState<PlayerLogic>, IReference
     {
         private PlayerLogic owner;
-
+        Vector3 dashDir;
+        private Coroutine dashCoroutine;
 
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
@@ -21,7 +22,8 @@ namespace KSG
         {
             base.OnEnter(procedureOwner);
             owner = procedureOwner.Owner;
-            owner.StartCoroutine(Dash(procedureOwner));
+            dashCoroutine = owner.StartCoroutine(Dash(procedureOwner));
+            dashDir = Vector3.zero;
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -32,6 +34,12 @@ namespace KSG
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
+            if (dashCoroutine != null)
+            {
+                owner.StopCoroutine(dashCoroutine);
+                dashCoroutine = null;
+            }
+            owner.desiredVelocity = Vector3.zero;
         }
 
         protected override void OnDestroy(ProcedureOwner procedureOwner)
@@ -46,6 +54,8 @@ namespace KSG
         public void Clear()
         {
             owner = null;
+            dashDir = Vector3.zero;
+            dashCoroutine = null;
         }
 
         private IEnumerator Dash(ProcedureOwner procedureOwner)
@@ -57,28 +67,45 @@ namespace KSG
             }
             float endTime = Time.time + PlayerConstantData.DashData.DASHDURATION;
 
-            while (Time.time < endTime)
+            if (owner.isAimOrShootState)
             {
-                if (owner.isAimOrShootState)
+                dashDir = new Vector3(
+                    owner.playerMoveInput.x,
+                    0f,
+                    owner.playerMoveInput.y
+                );
+
+                if (dashDir.sqrMagnitude < 0.01f)
                 {
-                    owner.transform.Translate(new Vector3(owner.playerMoveInput.x, 0, owner.playerMoveInput.y) * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime);
-                    yield return null;
+                    dashDir = owner.transform.forward;
                 }
-                else
-                {
-                    owner.transform.Translate(
-                    Vector3.forward * PlayerConstantData.DashData.DASHSPEED * Time.deltaTime);
-                    yield return null;
-                }
+
+                dashDir.Normalize();
+            }
+            else
+            {
+                dashDir = owner.transform.forward;
             }
 
+            while (Time.time < endTime)
+            {
+                owner.desiredVelocity =
+                    dashDir * PlayerConstantData.DashData.DASHSPEED;
+
+                yield return null;
+            }
+
+            owner.desiredVelocity = Vector3.zero;
             owner.isDashing = false;
             owner.lastDashTime = Time.time;
             if (owner.playerMoveInput == Vector2.zero)
             {
                 ChangeState<PlayerIdleState>(procedureOwner);
             }
-            ChangeState<PlayerMoveState>(procedureOwner);
+            else
+            {
+                ChangeState<PlayerMoveState>(procedureOwner);
+            }
 
         }
     }

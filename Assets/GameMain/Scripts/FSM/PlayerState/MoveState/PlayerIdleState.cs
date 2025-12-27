@@ -24,6 +24,7 @@ namespace KSG
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+            owner.desiredVelocity = Vector3.zero;
             owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, 0f);
 
             // TODO : 建议 状态多了之后 使用 状态优先级 来处理状态切换

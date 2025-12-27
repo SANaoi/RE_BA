@@ -36,7 +36,7 @@ namespace KSG
                 {
                     // 击中墙壁或其他物体
                 }
-                GameEntry.Entity.HideEntity(this);
+                GameEntry.Event.Fire(this, HideEntityInLevelEventArgs.Create(Entity.Id));
             }
         }
     }
