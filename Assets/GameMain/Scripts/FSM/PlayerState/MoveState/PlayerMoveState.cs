@@ -10,6 +10,7 @@ namespace KSG
     {
         private PlayerLogic owner;
         Vector3 dir;
+        float animationSpeed;
         protected override void OnInit(ProcedureOwner procedureOwner)
         {
             base.OnInit(procedureOwner);
@@ -28,7 +29,7 @@ namespace KSG
             {
                 Vector3 camForward = owner.m_Camera.transform.forward;
                 Vector3 camRight = owner.m_Camera.transform.right;
-
+                animationSpeed = owner.playerMoveInput.magnitude * 0.5f / owner.playerData.Speed;
                 camForward.y = 0f;
                 camRight.y = 0f;
 
@@ -44,12 +45,13 @@ namespace KSG
             else
             {
                 dir = owner.transform.forward * (owner.playerData.Speed * 0.7f);
+                animationSpeed = owner.playerMoveInput.magnitude * 0.7f / owner.playerData.Speed;
             }
-
+            
             owner.desiredVelocity = dir;
             owner.PlayAnimation(
                 owner.playerAnimationName.SpeedParameterHash,
-                owner.playerMoveInput.magnitude / owner.playerData.Speed
+                animationSpeed
             );
 
             if (owner.isDashing)
@@ -73,6 +75,7 @@ namespace KSG
         {
             base.OnLeave(procedureOwner, isShutdown);
             dir = Vector3.zero;
+            animationSpeed = 0f;
         }
         public static PlayerMoveState Create()
         {
@@ -83,6 +86,7 @@ namespace KSG
         {
             owner = null;
             dir = Vector3.zero;
+            animationSpeed = 0f;
         }
     }
 }

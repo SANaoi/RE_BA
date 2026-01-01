@@ -32,7 +32,7 @@ namespace KSG
             }
             m_trailRenderer = GetComponent<TrailRenderer>();
             if (m_trailRenderer != null) m_trailRenderer.Clear();
-            
+
 
             // 在 OnShow 中设置位置，确保每次复用都生效
             CachedTransform.position = projectileData.Position;
@@ -73,20 +73,27 @@ namespace KSG
 
         private Vector3 GetLaunchDirectionToSceneCenter()
         {
-            Ray ray = Camera.main.ScreenPointToRay(
-            new Vector3(Screen.width / 2f, Screen.height / 2f));
+            Ray camRay = Camera.main.ScreenPointToRay(
+                new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
 
-            Vector3 targetPoint;
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-            {
-                targetPoint = hit.point;
-            }
+            Vector3 aimPoint;
+            if (Physics.Raycast(camRay, out RaycastHit camHit, 1000f))
+                aimPoint = camHit.point;
             else
+                aimPoint = camRay.origin + camRay.direction * 1000f;
+
+            bool muzzleInside = Physics.OverlapSphere(
+                CachedTransform.position,
+                0.02f,
+                PlayerConstantData.CrosshairData.TargetLayerMask
+            ).Length > 0;
+
+            if (muzzleInside)
             {
-                targetPoint = ray.origin + ray.direction * 100f;
+                return m_LastPosition = camRay.direction;
             }
-            m_LastPosition = (targetPoint - CachedTransform.position).normalized;
-            return m_LastPosition;
+
+            return m_LastPosition = (aimPoint - CachedTransform.position).normalized;
         }
         protected void SpawnCollisionParticles(Vector3 pos, Quaternion rotation)
         {
