@@ -1,7 +1,6 @@
 using GameFramework;
 using GameFramework.Fsm;
 using UnityEngine;
-using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<KSG.PlayerLogic>;
 
 namespace KSG
@@ -28,7 +27,7 @@ namespace KSG
             owner.PlayAnimation(owner.playerAnimationName.SpeedParameterHash, 0f);
 
             // TODO : 建议 状态多了之后 使用 状态优先级 来处理状态切换
-            if (owner.isDashing)
+            if (owner.dashRequested)
             {
                 ChangeState<PlayerDashState>(procedureOwner);
                 return;

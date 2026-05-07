@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
+using GameFramework;
 
 namespace KSG
 {
-    public class PlayerAnimationName
+    public class PlayerAnimationName : IReference
     {
         [Header("Animation参数命名")]
         [SerializeField] private string IsRunningParameterName = "isRunning";
@@ -29,6 +29,20 @@ namespace KSG
             
             shootAnimationName = Animator.StringToHash(ShootAnimationName);
             
+        }
+        
+        public static PlayerAnimationName Create()
+        {
+            PlayerAnimationName state = ReferencePool.Acquire<PlayerAnimationName>();
+            return state;
+        }
+        public void Clear()
+        {
+            isRunningParameterHash = 0;
+            SpeedParameterHash = 0;
+            isAimParameterName = 0;
+            isShootParameterName = 0;
+            shootAnimationName = 0;
         }
     }
 }

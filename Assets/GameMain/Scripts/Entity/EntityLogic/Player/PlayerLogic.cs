@@ -20,6 +20,7 @@ namespace KSG
 		public bool isAim = false;
 		public bool isShoot = false;
 		public bool isDashing = false;
+		public bool dashRequested = false;
 
 		[Header("默认挂载")]
 		public Rigidbody rb;
@@ -75,7 +76,7 @@ namespace KSG
 				playerData.ProjectileType
 			);
 
-			playerAnimationName = new PlayerAnimationName();
+			playerAnimationName = PlayerAnimationName.Create();
 			playerAnimationName.InitializeData();
 
 			inputActions = new PlayerInputAction();
@@ -141,6 +142,7 @@ namespace KSG
 			GameEntry.Fsm.DestroyFsm(MoveFsmManager);
 			GameEntry.Fsm.DestroyFsm(ShootFsmManager);
 
+			ReferencePool.Release(playerAnimationName);
 			//把状态实例归还引用池
 			foreach (var item in MoveStates)
 			{
@@ -232,6 +234,11 @@ namespace KSG
 		#region Move Function
 		void Move()
 		{
+			if (isDashing)
+			{
+				return;
+			}
+
 			if (!isAimOrShootState)
 			{
 				CaculateInputDirection();
@@ -381,13 +388,28 @@ namespace KSG
 		}
 		void OnPlayerDashPerformed(InputAction.CallbackContext context)
 		{
-			if (Time.time > lastDashTime + PlayerConstantData.DashData.DASHCOOLDOWN)
+			if (!isDashing && !dashRequested && Time.time > lastDashTime + PlayerConstantData.DashData.DASHCOOLDOWN)
 			{
-				isDashing = true;
+				dashRequested = true;
 			}
 		}
 		#endregion
 		#region Animation Function
+		public void PlayLocomotionAnimation(Vector3 velocity)
+		{
+			float maxSpeed = playerData != null ? playerData.Speed : 0f;
+			float normalizedSpeed = 0f;
+
+			if (maxSpeed > Mathf.Epsilon)
+			{
+				normalizedSpeed = Mathf.Clamp01(
+					new Vector3(velocity.x, 0f, velocity.z).magnitude / maxSpeed
+				);
+			}
+
+			PlayAnimation(playerAnimationName.SpeedParameterHash, normalizedSpeed);
+		}
+
 		public void PlayAnimation(int animationHash, float value, float dampvale = 0.1f)
 		{
 			animator.SetFloat(animationHash, value, dampvale, Time.deltaTime);

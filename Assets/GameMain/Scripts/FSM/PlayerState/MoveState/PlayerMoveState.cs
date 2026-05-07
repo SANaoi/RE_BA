@@ -24,12 +24,13 @@ namespace KSG
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+            float inputMagnitude = Mathf.Clamp01(owner.playerMoveInput.magnitude);
 
             if (owner.isAimOrShootState)
             {
                 Vector3 camForward = owner.m_Camera.transform.forward;
                 Vector3 camRight = owner.m_Camera.transform.right;
-                animationSpeed = owner.playerMoveInput.magnitude * 0.5f / owner.playerData.Speed;
+                animationSpeed = owner.playerMoveInput.magnitude * 0.3f;
                 camForward.y = 0f;
                 camRight.y = 0f;
 
@@ -40,21 +41,28 @@ namespace KSG
                     camRight * owner.playerMoveInput.x +
                     camForward * owner.playerMoveInput.y;
 
-                dir *= owner.playerData.Speed * 0.5f;
+                dir *= owner.playerData.Speed * 0.3f;
             }
             else
             {
-                dir = owner.transform.forward * (owner.playerData.Speed * 0.7f);
-                animationSpeed = owner.playerMoveInput.magnitude * 0.7f / owner.playerData.Speed;
+                dir = owner.transform.forward * (owner.playerData.Speed * 0.4f * inputMagnitude);
+                animationSpeed = dir.magnitude / owner.playerData.Speed;
             }
             
             owner.desiredVelocity = dir;
-            owner.PlayAnimation(
-                owner.playerAnimationName.SpeedParameterHash,
-                animationSpeed
-            );
+            if (owner.isAimOrShootState)
+            {
+                owner.PlayAnimation(
+                    owner.playerAnimationName.SpeedParameterHash,
+                    animationSpeed
+                );
+            }
+            else
+            {
+                owner.PlayLocomotionAnimation(dir);
+            }
 
-            if (owner.isDashing)
+            if (owner.dashRequested)
             {
                 ChangeState<PlayerDashState>(procedureOwner);
                 return;

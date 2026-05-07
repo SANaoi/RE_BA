@@ -23,6 +23,7 @@ namespace KSG
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+            float inputMagnitude = Mathf.Clamp01(owner.playerMoveInput.magnitude);
             if (owner.isAimOrShootState)
             {
                 Vector3 camForward = owner.m_Camera.transform.forward;
@@ -42,16 +43,23 @@ namespace KSG
             }
             else
             {
-                dir = owner.transform.forward * owner.playerData.Speed;
+                dir = owner.transform.forward * (owner.playerData.Speed * inputMagnitude);
             }
 
             owner.desiredVelocity = dir;
 
-            owner.PlayAnimation(
-                owner.playerAnimationName.SpeedParameterHash,
-                owner.playerMoveInput.magnitude
-            );
-            if (owner.isDashing)
+            if (owner.isAimOrShootState)
+            {
+                owner.PlayAnimation(
+                    owner.playerAnimationName.SpeedParameterHash,
+                    owner.playerMoveInput.magnitude
+                );
+            }
+            else
+            {
+                owner.PlayLocomotionAnimation(dir);
+            }
+            if (owner.dashRequested)
             {
                 ChangeState<PlayerDashState>(procedureOwner);
                 return;

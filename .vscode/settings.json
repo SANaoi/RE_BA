@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "RE_BA.sln"
+    "dotnet.defaultSolution": "RE_BA.slnx"
 }
