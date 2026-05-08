@@ -26,13 +26,13 @@ namespace KSG
             "Camera",
             "Projectile"
         };
-                private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();
+        private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();
 
         protected override void OnEnter(IFsm<GameFramework.Procedure.IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
-            
-            
+
+
             GameEntry.Event.Subscribe(LoadDataTableSuccessEventArgs.EventId, OnLoadDataTableSuccess);
             GameEntry.Event.Subscribe(LoadDataTableFailureEventArgs.EventId, OnLoadDataTableFailure);
             GameEntry.Event.Subscribe(LoadDictionarySuccessEventArgs.EventId, OnLoadDictionarySuccess);
@@ -49,6 +49,7 @@ namespace KSG
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
 
+            // 检测所有资源是否加载完成
             foreach (KeyValuePair<string, bool> loadedFlag in m_LoadedFlag)
             {
                 if (!loadedFlag.Value)

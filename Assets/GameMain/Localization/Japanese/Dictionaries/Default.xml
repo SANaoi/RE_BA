@@ -2,8 +2,9 @@
 <Dictionaries>
   <Dictionary Language="Japanese">
     <String Key="Menu.SettingButton" Value="設定" />
+    <String Key="Menu.StartButton" Value="開始" />
     <String Key="Setting.Language" Value="言語" />
-    <String Key="Setting.LanguageTips" Value="言語を変更するにはゲームを再起動する必要があります" />
+    <String Key="Setting.LanguageTips" Value="言語を切り替えますか？" />
     <String Key="Dialog.ConfirmButton" Value="確認" />
     <String Key="Dialog.CancelButton" Value="取消" />
   </Dictionary>

@@ -127,6 +127,7 @@
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\CommonLauncher.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Event\LanguageChangedEventArgs.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureLaunch.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\DialogForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\CommonButton.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\InputProviderControl.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Builtin.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.ProcedureRunningData.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Localization\LanguageSwitcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerRunState.cs" />
     <Compile Include="Assets\GameMain\Scripts\BuiltinData\BuiltinDataComponent.cs" />
   </ItemGroup>

@@ -2,9 +2,10 @@
 <Dictionaries>
   <Dictionary Language="English">
     <String Key="Menu.SettingButton" Value="Setting" />
+    <String Key="Menu.StartButton" Value="Start" />
     <String Key="Setting.Language" Value="Language" />
-    <String Key="Setting.LanguageTips" Value="Changing the language requires restarting the game." />
-    <String Key="Dialog.ConfirmButton" Value="Comfirm" />
+    <String Key="Setting.LanguageTips" Value="Do you want to switch the language?" />
+    <String Key="Dialog.ConfirmButton" Value="Confirms" />
     <String Key="Dialog.CancelButton" Value="Cancel" />
   </Dictionary>
 </Dictionaries>

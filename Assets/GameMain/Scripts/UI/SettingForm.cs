@@ -1,13 +1,11 @@
 using GameFramework.Localization;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityGameFramework.Runtime;
 
 namespace KSG
 {
     public class SettingForm : UGuiFormEx
     {
-
         [SerializeField]
         private CanvasGroup m_LanguageTipsCanvasGroup = null;
 
@@ -24,17 +22,12 @@ namespace KSG
 
         public void OnSubmitButtonClick()
         {
-            if (m_SelectedLanguage == GameEntry.Localization.Language)
+            if (LanguageSwitcher.IsSwitching || m_SelectedLanguage == GameEntry.Localization.Language)
             {
-                Close();
                 return;
             }
 
-
-            GameEntry.Setting.SetString(Constant.Setting.Language, m_SelectedLanguage.ToString());
-            GameEntry.Setting.Save();
-
-            UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Restart);
+            LanguageSwitcher.SwitchLanguage(m_SelectedLanguage);
         }
 
         protected override void OnOpen(object userData)
@@ -51,13 +44,17 @@ namespace KSG
                 case Language.ChineseSimplified:
                     m_ChineseToggle.isOn = true;
                     break;
+
                 case Language.Japanese:
                     m_JapaneseToggle.isOn = true;
                     break;
-
-                default:
-                    break;
             }
+        }
+
+        protected override void RefreshLocalization()
+        {
+            base.RefreshLocalization();
+            RefreshLanguageTips();
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
