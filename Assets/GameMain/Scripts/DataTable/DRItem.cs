@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2026-05-10 20:50:46.495
+// 生成时间：2026-05-10 20:50:46.499
 //------------------------------------------------------------
 
 using GameFramework;
@@ -19,14 +19,14 @@ using UnityGameFramework.Runtime;
 namespace KSG
 {
     /// <summary>
-    /// 实体配置表。
+    /// 物品配置表。
     /// </summary>
-    public class DREntity : DataRowBase
+    public class DRItem : DataRowBase
     {
         private int m_Id = 0;
 
         /// <summary>
-        /// 获取实体类型编号。
+        /// 获取配置编号。
         /// </summary>
         public override int Id
         {
@@ -37,9 +37,9 @@ namespace KSG
         }
 
         /// <summary>
-        /// 获取资源名称。
+        /// 获取所处资源组名称。
         /// </summary>
-        public string AssetName
+        public string GroupName
         {
             get;
             private set;
@@ -57,7 +57,7 @@ namespace KSG
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            AssetName = columnStrings[index++];
+            GroupName = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -70,7 +70,7 @@ namespace KSG
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    AssetName = binaryReader.ReadString();
+                    GroupName = binaryReader.ReadString();
                 }
             }
 

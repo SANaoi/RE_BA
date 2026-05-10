@@ -30,6 +30,15 @@ namespace KSG
                 (entity) => {GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm); },
                 EntityDataPlayer.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Momoi_Original)
             ));
+            GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create
+            (
+                typeof(ItemLogic),
+                "Item", 
+                "Item", 
+                Constant.AssetPriority.ItemAsset,
+                (entity) => { },
+                EntityDataItem.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Envelope)
+            ));
         }
 
         public void OnUpdate()

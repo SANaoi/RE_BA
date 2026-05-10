@@ -71,6 +71,7 @@
     <Compile Include="Assets\GameMain\Scripts\Level\LevelControl.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\SettingForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Camera\CameraLogic.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Item\ItemLogic.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\PlayerAimRigController.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DREntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumUIForm.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Player\AttackerData.cs" />
     <Compile Include="Assets\GameMain\Test\UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Scripts\SpawnEffect.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerMoveState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntiyDataItem.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.Setting.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\Launcher.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\ILauncher.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.AssetPriority.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\Event\ShowEntityInLevelEventArgs.cs" />
+    <Compile Include="Assets\GameMain\Scripts\DataTable\DRItem.cs" />
     <Compile Include="Assets\GameMain\Scripts\Base\GameEntry.Custom.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerAnimationName.cs" />
     <Compile Include="Assets\GameMain\Res\TimelineTest\DialogueTimelineController.cs" />
@@ -171,6 +174,7 @@
     <None Include="Assets\GameMain\Test\ShaderTest\Scripts\ShaderTest2.0\temp.shader" />
     <None Include="Assets\GameMain\Test\UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Shaders\Respawn.shader" />
     <None Include="Assets\GameMain\Configs\DataTableCodeTemplate.txt" />
+    <None Include="Assets\GameMain\DataTables\Item.txt" />
     <None Include="Assets\GameMain\Test\UnityTechnologies\ParticlePack\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\GameMain\Test\ShaderTest\Scripts\ShaderTest2.0\01Base\BaseURPWithUV.shader" />
     <None Include="Assets\GameMain\DataTables\Camera.txt" />
