@@ -156,6 +156,15 @@ namespace KSG
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Bag"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea89ca8c-360e-410b-b4c6-28dde899ad17"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -290,6 +299,17 @@ namespace KSG
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e43b8b4-f048-42c7-8797-dce759c5b39d"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -305,6 +325,7 @@ namespace KSG
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
             m_Player_ScrollWheel = m_Player.FindAction("ScrollWheel", throwIfNotFound: true);
+            m_Player_Bag = m_Player.FindAction("Bag", throwIfNotFound: true);
         }
 
         ~@PlayerInputAction()
@@ -392,6 +413,7 @@ namespace KSG
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Dash;
         private readonly InputAction m_Player_ScrollWheel;
+        private readonly InputAction m_Player_Bag;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -431,6 +453,10 @@ namespace KSG
             /// Provides access to the underlying input action "Player/ScrollWheel".
             /// </summary>
             public InputAction @ScrollWheel => m_Wrapper.m_Player_ScrollWheel;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Bag".
+            /// </summary>
+            public InputAction @Bag => m_Wrapper.m_Player_Bag;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -478,6 +504,9 @@ namespace KSG
                 @ScrollWheel.started += instance.OnScrollWheel;
                 @ScrollWheel.performed += instance.OnScrollWheel;
                 @ScrollWheel.canceled += instance.OnScrollWheel;
+                @Bag.started += instance.OnBag;
+                @Bag.performed += instance.OnBag;
+                @Bag.canceled += instance.OnBag;
             }
 
             /// <summary>
@@ -510,6 +539,9 @@ namespace KSG
                 @ScrollWheel.started -= instance.OnScrollWheel;
                 @ScrollWheel.performed -= instance.OnScrollWheel;
                 @ScrollWheel.canceled -= instance.OnScrollWheel;
+                @Bag.started -= instance.OnBag;
+                @Bag.performed -= instance.OnBag;
+                @Bag.canceled -= instance.OnBag;
             }
 
             /// <summary>
@@ -599,6 +631,13 @@ namespace KSG
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnScrollWheel(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Bag" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnBag(InputAction.CallbackContext context);
         }
     }
 }
