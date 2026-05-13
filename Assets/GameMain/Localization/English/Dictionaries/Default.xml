@@ -7,5 +7,8 @@
     <String Key="Setting.LanguageTips" Value="Do you want to switch the language?" />
     <String Key="Dialog.ConfirmButton" Value="Confirms" />
     <String Key="Dialog.CancelButton" Value="Cancel" />
+    <String Key="Bag.Player" Value="Player" />
+    <String Key="Player.HP" Value="Health" />
+    <String Key="Player.Speed" Value="Speed" />
   </Dictionary>
 </Dictionaries>

@@ -7,5 +7,8 @@
     <String Key="Setting.LanguageTips" Value="是否切换语言？" />
     <String Key="Dialog.ConfirmButton" Value="确认" />
     <String Key="Dialog.CancelButton" Value="取消" />
+    <String Key="Bag.Player" Value="玩家" />
+    <String Key="Player.HP" Value="生命值" />
+    <String Key="Player.Speed" Value="速度" />
   </Dictionary>
 </Dictionaries>
