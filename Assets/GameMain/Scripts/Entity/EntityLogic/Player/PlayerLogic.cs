@@ -51,6 +51,7 @@ namespace KSG
 		protected IFsm<PlayerLogic> ShootFsmManager;
 		protected List<FsmState<PlayerLogic>> MoveStateList;
 		protected List<FsmState<PlayerLogic>> ShootStateList;
+		private bool m_GameplayInputEnabled = true;
 
 		protected override float MaxHP
 		{
@@ -111,6 +112,17 @@ namespace KSG
 		protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
 		{
 			base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+			UIWindowController.Tick();
+			RefreshGameplayInputState();
+
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				ResetGameplayInputState();
+				SetRigWeight();
+				SetCrosshairSize();
+				return;
+			}
 
 			Move();
 			SetRigWeight();
@@ -177,6 +189,7 @@ namespace KSG
 		{
 			cameraEntityLogic = entity.Logic as CameraLogic;
 			cameraEntityLogic.SetTarget(cameraParent);
+			RefreshGameplayInputState();
 		}
 
 		private void SetRigWeight()
@@ -337,6 +350,7 @@ namespace KSG
 			PlayerActions.Shoot.canceled += OnPlayerShootCanceled;
 
 			PlayerActions.Dash.performed += OnPlayerDashPerformed;
+			PlayerActions.Bag.performed += OnPlayerBagPerformed;
 		}
 
 		protected virtual void RemoveInputActionsCallbacks()
@@ -352,11 +366,17 @@ namespace KSG
 			PlayerActions.Shoot.canceled -= OnPlayerShootCanceled;
 
 			PlayerActions.Dash.performed -= OnPlayerDashPerformed;
+			PlayerActions.Bag.performed -= OnPlayerBagPerformed;
 
 		}
 
 		void GetplayerMoveInput(InputAction.CallbackContext context)
 		{
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				return;
+			}
+
 			playerMoveInput = context.ReadValue<Vector2>();
 
 		}
@@ -367,11 +387,21 @@ namespace KSG
 
 		void GetRunInput(InputAction.CallbackContext ctx)
 		{
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				return;
+			}
+
 			isRunning = !isRunning;
 		}
 
 		void OnPlayerAimPerformed(InputAction.CallbackContext context)
 		{
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				return;
+			}
+
 			isAim = true;
 		}
 		void OnPlayerAimcanceled(InputAction.CallbackContext context)
@@ -380,6 +410,11 @@ namespace KSG
 		}
 		void OnPlayerShootPerformed(InputAction.CallbackContext context)
 		{
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				return;
+			}
+
 			isShoot = true;
 		}
 		void OnPlayerShootCanceled(InputAction.CallbackContext context)
@@ -388,10 +423,58 @@ namespace KSG
 		}
 		void OnPlayerDashPerformed(InputAction.CallbackContext context)
 		{
+			if (UIWindowController.IsGameplayInputLocked)
+			{
+				return;
+			}
+
 			if (!isDashing && !dashRequested && Time.time > lastDashTime + PlayerConstantData.DashData.DASHCOOLDOWN)
 			{
 				dashRequested = true;
 			}
+		}
+		void OnPlayerBagPerformed(InputAction.CallbackContext context)
+		{
+			OpenBag();
+		}
+		// 打开背包界面按钮
+		public void OpenBag()
+		{
+			UIWindowController.ToggleForm(EnumUIForm.BagForm, GameEntry.Procedure.CurrentProcedure);
+			RefreshGameplayInputState();
+		}
+
+		private void ResetGameplayInputState()
+		{
+			playerMoveInput = Vector2.zero;
+			desiredVelocity = Vector3.zero;
+			isAim = false;
+			isShoot = false;
+			isRunning = false;
+		}
+
+		private void RefreshGameplayInputState()
+		{
+			bool shouldEnableGameplayInput = !UIWindowController.IsGameplayInputLocked;
+			if (m_GameplayInputEnabled == shouldEnableGameplayInput)
+			{
+				return;
+			}
+
+			m_GameplayInputEnabled = shouldEnableGameplayInput;
+
+			if (cameraEntityLogic == null || cameraEntityLogic.inputProvider == null)
+			{
+				return;
+			}
+
+			if (shouldEnableGameplayInput)
+			{
+				cameraEntityLogic.inputProvider.EnableInputProvider();
+				return;
+			}
+
+			cameraEntityLogic.inputProvider.DisableInputProvider();
 		}
 		#endregion
 		#region Animation Function

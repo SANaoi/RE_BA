@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -19,10 +20,12 @@ namespace KSG
 		private const float FadeTime = 0.3f;
 
 		private static Font s_MainFont = null;
+		private static TMP_FontAsset s_MainTmpFont = null;
 		private Canvas m_CachedCanvas = null;
 		private CanvasGroup m_CanvasGroup = null;
 		private List<Canvas> m_CachedCanvasContainer = new List<Canvas>();
 		private readonly Dictionary<Text, string> m_LocalizedKeys = new Dictionary<Text, string>();
+		private readonly Dictionary<TMP_Text, string> m_LocalizedTmpKeys = new Dictionary<TMP_Text, string>();
 		public int OriginalDepth
 		{
 			get;
@@ -72,9 +75,28 @@ namespace KSG
 			s_MainFont = mainFont;
 		}
 
+		public static void SetMainTmpFont(TMP_FontAsset mainTmpFont)
+		{
+			if (mainTmpFont == null)
+			{
+				Log.Error("Main TMP font is invalid.");
+				return;
+			}
+
+			s_MainTmpFont = mainTmpFont;
+		}
+
 		protected virtual void RefreshLocalization()
 		{
 			foreach (var kvp in m_LocalizedKeys)
+			{
+				if (kvp.Key != null)
+				{
+					kvp.Key.text = GameEntry.Localization.GetString(kvp.Value);
+				}
+			}
+
+			foreach (var kvp in m_LocalizedTmpKeys)
 			{
 				if (kvp.Key != null)
 				{
@@ -105,6 +127,7 @@ namespace KSG
 			gameObject.GetOrAddComponent<GraphicRaycaster>();
 
 			m_LocalizedKeys.Clear();
+			m_LocalizedTmpKeys.Clear();
 			Text[] texts = GetComponentsInChildren<Text>(true);
 			for (int i = 0; i < texts.Length; i++)
 			{
@@ -113,6 +136,21 @@ namespace KSG
 				{
 					m_LocalizedKeys[texts[i]] = texts[i].text;
 					texts[i].text = GameEntry.Localization.GetString(texts[i].text);
+				}
+			}
+
+			TMP_Text[] tmpTexts = GetComponentsInChildren<TMP_Text>(true);
+			for (int i = 0; i < tmpTexts.Length; i++)
+			{
+				if (s_MainTmpFont != null)
+				{
+					tmpTexts[i].font = s_MainTmpFont;
+				}
+
+				if (!string.IsNullOrEmpty(tmpTexts[i].text))
+				{
+					m_LocalizedTmpKeys[tmpTexts[i]] = tmpTexts[i].text;
+					tmpTexts[i].text = GameEntry.Localization.GetString(tmpTexts[i].text);
 				}
 			}
 		}
@@ -125,6 +163,7 @@ namespace KSG
 		{
 			base.OnRecycle();
 			m_LocalizedKeys.Clear();
+			m_LocalizedTmpKeys.Clear();
 		}
 
 #if UNITY_2017_3_OR_NEWER
