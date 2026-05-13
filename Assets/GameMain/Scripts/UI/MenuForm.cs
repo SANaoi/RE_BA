@@ -21,6 +21,7 @@ namespace KSG
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+            UIWindowController.RegisterForm(EnumUIForm.MenuForm, false, true, false);
             m_ProcedureMenu = (ProcedureMenu)userData;
             if (m_ProcedureMenu == null)
             {
@@ -29,6 +30,12 @@ namespace KSG
             }
 
             // m_QuitButton.SetActive(Application.platform != RuntimePlatform.IPhonePlayer)
+        }
+
+        protected override void OnClose(bool isShutdown, object userData)
+        {
+            UIWindowController.UnregisterForm(EnumUIForm.MenuForm);
+            base.OnClose(isShutdown, userData);
         }
 	}
 }

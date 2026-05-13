@@ -33,6 +33,7 @@ namespace KSG
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+            UIWindowController.RegisterForm(EnumUIForm.SettingForm, false, true, true);
 
             m_SelectedLanguage = GameEntry.Localization.Language;
             switch (m_SelectedLanguage)
@@ -49,6 +50,8 @@ namespace KSG
                     m_JapaneseToggle.isOn = true;
                     break;
             }
+
+            RefreshLocalization();
         }
 
         protected override void RefreshLocalization()
@@ -103,6 +106,12 @@ namespace KSG
         private void RefreshLanguageTips()
         {
             m_LanguageTipsCanvasGroup.gameObject.SetActive(m_SelectedLanguage != GameEntry.Localization.Language);
+        }
+
+        protected override void OnClose(bool isShutdown, object userData)
+        {
+            UIWindowController.UnregisterForm(EnumUIForm.SettingForm);
+            base.OnClose(isShutdown, userData);
         }
     }
 }

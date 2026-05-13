@@ -244,6 +244,7 @@ namespace KSG
 #endif
 		{
 			base.OnUpdate(elapseSeconds, realElapseSeconds);
+			UIWindowController.Tick();
 		}
 
 #if UNITY_2017_3_OR_NEWER

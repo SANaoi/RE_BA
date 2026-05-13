@@ -6,6 +6,8 @@ namespace KSG
 {
     public static class UIWindowController
     {
+        private static int s_LastTickFrame = -1;
+
         private sealed class ManagedFormState
         {
             public bool LockGameplayInput;
@@ -71,6 +73,13 @@ namespace KSG
 
         public static void Tick()
         {
+            if (s_LastTickFrame == Time.frameCount)
+            {
+                return;
+            }
+
+            s_LastTickFrame = Time.frameCount;
+
             if (Keyboard.current == null)
             {
                 return;
