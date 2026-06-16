@@ -101,8 +101,8 @@
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureSplash.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerIdleState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataCamera.cs" />
-    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerDashState.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\BagForm.cs" />
+    <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\MoveState\PlayerDashState.cs" />
     <Compile Include="Assets\GameMain\Scripts\Level\IPause.cs" />
     <Compile Include="Assets\GameMain\Definition\PlayerData\PlayerConstantData.CrosshairData.cs" />
     <Compile Include="Assets\GameMain\Test\AnimatedImageSwitcher.cs" />
@@ -114,6 +114,7 @@
     <Compile Include="Assets\GameMain\Definition\Enum\CampType.cs" />
     <Compile Include="Assets\GameMain\Test\UnityTechnologies\ParticlePack\Shared\Ramps\Runtime\RampAsset.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRCamera.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Level\PlayerInventory.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UpdateResourceForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumEntity.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRScene.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\EnitityTargetable.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataProjectile.cs" />
     <Compile Include="Assets\GameMain\Scripts\FSM\PlayerState\ShootState\PlayerNormalState.cs" />
+    <Compile Include="Assets\GameMain\Scripts\Event\PickupItemEventArgs.cs" />
     <Compile Include="Assets\GameMain\Scripts\Procedures\ProcedureBase.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityLogic\CommonLauncher.cs" />
     <Compile Include="Assets\GameMain\Scripts\UI\UIWindowController.cs" />

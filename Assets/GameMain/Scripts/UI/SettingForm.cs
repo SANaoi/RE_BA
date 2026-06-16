@@ -1,6 +1,7 @@
 using GameFramework.Localization;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityGameFramework.Runtime;
 
 namespace KSG
 {

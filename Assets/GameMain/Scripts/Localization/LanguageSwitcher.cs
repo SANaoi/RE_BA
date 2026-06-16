@@ -106,7 +106,7 @@ namespace KSG
             }
 
             GameEntry.Resource.SetCurrentVariant(currentVariant);
-            Log.Info("Init current variant complete.");
+            
         }
     }
 }

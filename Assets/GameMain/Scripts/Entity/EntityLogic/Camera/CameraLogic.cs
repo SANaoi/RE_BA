@@ -26,9 +26,9 @@ namespace KSG
             base.OnInit(userData);
 
             cameraData = userData as EntityDataCamera;
-            virtualCamera = GetComponent<CinemachineVirtualCamera>();
-            framingTransposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
-            inputProvider = GetComponent<InputProviderControl>();
+            virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            inputProvider = GetComponentInChildren<InputProviderControl>();
 
             targetDistance = defaultDistance;
             m_Camera = UnityEngine.Camera.main;

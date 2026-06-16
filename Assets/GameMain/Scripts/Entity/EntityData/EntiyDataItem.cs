@@ -19,6 +19,7 @@ namespace KSG
             EntityDataItem data = ReferencePool.Acquire<EntityDataItem>();
             data.Id = entityId;
             data.TypeId = typeId;
+            data.m_ItemId = typeId;
             IDataTable<DRItem> dt = GameEntry.DataTable.GetDataTable<DRItem>();
             DRItem row = dt.GetDataRow(typeId);
             if (row != null)

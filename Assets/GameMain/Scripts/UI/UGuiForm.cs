@@ -162,8 +162,6 @@ namespace KSG
 #endif
 		{
 			base.OnRecycle();
-			m_LocalizedKeys.Clear();
-			m_LocalizedTmpKeys.Clear();
 		}
 
 #if UNITY_2017_3_OR_NEWER
@@ -173,6 +171,7 @@ namespace KSG
 #endif
 		{
 			base.OnOpen(userData);
+			RefreshLocalization();
 
 			m_CanvasGroup.alpha = 0f;
 			StopAllCoroutines();

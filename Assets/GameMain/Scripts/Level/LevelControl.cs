@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GameFramework;
 using GameFramework.Event;
-using Unity.Mathematics;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace KSG
@@ -11,16 +11,30 @@ namespace KSG
     {
         private Dictionary<int, Entity> m_dicSerialEntity;
         private Dictionary<int, Action<Entity>> m_dicCallback;
+        private PlayerInventory m_Inventory;
 
         private bool pause = false;
         public LevelControl()
         {
             m_dicSerialEntity = new Dictionary<int, Entity>();
             m_dicCallback = new Dictionary<int, Action<Entity>>();
+            m_Inventory = new PlayerInventory();
+        }
+
+        public PlayerInventory Inventory
+        {
+            get
+            {
+                return m_Inventory;
+            }
         }
         public void OnEnter()
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+            GameEntry.Event.Subscribe(PickupItemEventArgs.EventId, OnPickupItem);
+            EntityDataItem demoItemData = EntityDataItem.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Envelope);
+            demoItemData.Position = new Vector3(2f, 0f, 2f);
+
             GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create
             (
                 typeof(PlayerLogic),
@@ -37,7 +51,7 @@ namespace KSG
                 "Item", 
                 Constant.AssetPriority.ItemAsset,
                 (entity) => { },
-                EntityDataItem.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Envelope)
+                demoItemData
             ));
         }
 
@@ -147,6 +161,18 @@ namespace KSG
             m_dicSerialEntity.Add(ne.Entity.Id, ne.Entity);
             callback?.Invoke(ne.Entity);
         }
+
+        private void OnPickupItem(object sender, GameEventArgs e)
+        {
+            PickupItemEventArgs ne = (PickupItemEventArgs)e;
+            if (ne == null)
+            {
+                return;
+            }
+
+            m_Inventory.AddItem(ne.ItemId, ne.Count);
+            HideEntity(ne.ItemEntityId);
+        }
         public static LevelControl Create()
         {
             LevelControl levelControl = ReferencePool.Acquire<LevelControl>();
@@ -156,7 +182,9 @@ namespace KSG
         {
             m_dicSerialEntity.Clear();
             m_dicCallback.Clear();
+            m_Inventory.Clear();
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+            GameEntry.Event.Unsubscribe(PickupItemEventArgs.EventId, OnPickupItem);
         }
     }
 }

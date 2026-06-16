@@ -11,6 +11,14 @@ namespace KSG
     {
         private IFsm<IProcedureManager> m_ProcedureOwner;
         private LevelControl m_LevelControl;
+        public PlayerInventory Inventory
+        {
+            get
+            {
+                return m_LevelControl != null ? m_LevelControl.Inventory : null;
+            }
+        }
+
         public override bool UseNativeDialog
         {
             get
