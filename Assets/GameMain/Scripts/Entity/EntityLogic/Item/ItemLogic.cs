@@ -2,7 +2,7 @@ namespace KSG
 {
     public class ItemLogic : EntityLogicBase
     {
-        private const float PickupRadius = 1.25f;
+        private const float PickupRadius = 0.75f;
 
         private EntityDataItem m_ItemData = null;
         private bool m_IsPicked = false;
@@ -43,7 +43,7 @@ namespace KSG
             }
 
             m_IsPicked = true;
-            GameEntry.Event.Fire(this, PickupItemEventArgs.Create(Entity.Id, m_ItemData.ItemId, 1, player.Id));
+            GameEntry.Event.Fire(this, PickupItemEventArgs.Create(Entity.Id, m_ItemData.ItemId, m_ItemData.Count, player.Id));
         }
 
         private void EnsurePickupTrigger()

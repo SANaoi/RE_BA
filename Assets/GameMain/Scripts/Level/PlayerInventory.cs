@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameFramework.DataTable;
 
 namespace KSG
 {
@@ -14,6 +15,17 @@ namespace KSG
         {
             get;
             private set;
+        }
+
+        public string NameKey
+        {
+            get
+            {
+                IDataTable<DRItem> dtItem = GameEntry.DataTable.GetDataTable<DRItem>();
+                DRItem drItem = dtItem.GetDataRow(ItemId);
+                return drItem != null ? drItem.NameKey : string.Empty;
+            }
+            private set{}
         }
 
         public InventoryItemStack(int itemId, int count)

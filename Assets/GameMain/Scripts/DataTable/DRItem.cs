@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2026-06-16 22:27:30.433
+// 生成时间：2026-06-17 00:57:56.318
 //------------------------------------------------------------
 
 using GameFramework;
@@ -45,6 +45,33 @@ namespace KSG
             private set;
         }
 
+        /// <summary>
+        /// 获取名称文本Id。
+        /// </summary>
+        public string NameKey
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取描述文本Id。
+        /// </summary>
+        public string DescriptionKey
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取图标资源名称。
+        /// </summary>
+        public string IconAsset
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -58,6 +85,9 @@ namespace KSG
             m_Id = int.Parse(columnStrings[index++]);
             index++;
             GroupName = columnStrings[index++];
+            NameKey = columnStrings[index++];
+            DescriptionKey = columnStrings[index++];
+            IconAsset = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -71,6 +101,9 @@ namespace KSG
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
                     GroupName = binaryReader.ReadString();
+                    NameKey = binaryReader.ReadString();
+                    DescriptionKey = binaryReader.ReadString();
+                    IconAsset = binaryReader.ReadString();
                 }
             }
 

@@ -173,9 +173,7 @@ namespace KSG
 			base.OnOpen(userData);
 			RefreshLocalization();
 
-			m_CanvasGroup.alpha = 0f;
-			StopAllCoroutines();
-			StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
+			PlayFadeIn();
 		}
 
 #if UNITY_2017_3_OR_NEWER
@@ -204,9 +202,7 @@ namespace KSG
 		{
 			base.OnResume();
 
-			m_CanvasGroup.alpha = 0f;
-			StopAllCoroutines();
-			StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
+			PlayFadeIn();
 		}
 
 #if UNITY_2017_3_OR_NEWER
@@ -268,6 +264,24 @@ namespace KSG
 		{
 			yield return m_CanvasGroup.FadeToAlpha(0f, duration);
 			GameEntry.UI.CloseUIForm(this);
+		}
+
+		private void PlayFadeIn()
+		{
+			if (m_CanvasGroup == null)
+			{
+				return;
+			}
+
+			m_CanvasGroup.alpha = 0f;
+
+			if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+			{
+				return;
+			}
+
+			StopAllCoroutines();
+			StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
 		}
 	}
 }

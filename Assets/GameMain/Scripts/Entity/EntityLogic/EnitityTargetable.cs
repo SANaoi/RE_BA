@@ -31,6 +31,7 @@ namespace KSG
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
+            hp = MaxHP;
         }
 
         protected override void OnHide(bool isShutdown, object userData)

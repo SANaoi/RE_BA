@@ -12,6 +12,7 @@ namespace KSG
         private Dictionary<int, Entity> m_dicSerialEntity;
         private Dictionary<int, Action<Entity>> m_dicCallback;
         private PlayerInventory m_Inventory;
+        private PlayerLogic m_Player;
 
         private bool pause = false;
         public LevelControl()
@@ -28,11 +29,20 @@ namespace KSG
                 return m_Inventory;
             }
         }
+
+        public PlayerLogic Player
+        {
+            get
+            {
+                return m_Player;
+            }
+        }
+
         public void OnEnter()
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(PickupItemEventArgs.EventId, OnPickupItem);
-            EntityDataItem demoItemData = EntityDataItem.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Envelope);
+            EntityDataItem demoItemData = EntityDataItem.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Envelope, 2);
             demoItemData.Position = new Vector3(2f, 0f, 2f);
 
             GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create
@@ -41,7 +51,11 @@ namespace KSG
                 "Player", 
                 "Player", 
                 Constant.AssetPriority.PlayerAsset,
-                (entity) => {GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm); },
+                (entity) =>
+                {
+                    m_Player = entity.Logic as PlayerLogic;
+                    GameEntry.UI.OpenUIForm(EnumUIForm.CrosshairForm);
+                },
                 EntityDataPlayer.Create(GameEntry.Entity.GenerateSerialId(), (int)EnumEntity.Momoi_Original)
             ));
             GameEntry.Event.Fire(this, ShowEntityInLevelEventArgs.Create
@@ -183,6 +197,7 @@ namespace KSG
             m_dicSerialEntity.Clear();
             m_dicCallback.Clear();
             m_Inventory.Clear();
+            m_Player = null;
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Unsubscribe(PickupItemEventArgs.EventId, OnPickupItem);
         }

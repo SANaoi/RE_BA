@@ -87,6 +87,7 @@
     <Compile Include="Assets\GameMain\Test\MultiImageController.cs" />
     <Compile Include="Assets\GameMain\Scripts\Entity\EntityData\EntityDataFollower.cs" />
     <Compile Include="Assets\GameMain\Definition\Constant\Constant.AssetPriority.cs" />
+    <Compile Include="Assets\GameMain\Scripts\UI\ItemCellForm.cs" />
     <Compile Include="Assets\GameMain\Scripts\Enum\EnumCamera.cs" />
     <Compile Include="Assets\GameMain\Scripts\Event\ShowEntityInLevelEventArgs.cs" />
     <Compile Include="Assets\GameMain\Scripts\DataTable\DRItem.cs" />

@@ -19,6 +19,14 @@ namespace KSG
             }
         }
 
+        public PlayerLogic CurrentPlayer
+        {
+            get
+            {
+                return m_LevelControl != null ? m_LevelControl.Player : null;
+            }
+        }
+
         public override bool UseNativeDialog
         {
             get
